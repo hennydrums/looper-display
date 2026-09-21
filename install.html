@@ -444,6 +444,24 @@
   <p><code>Remote</code> ist Voraussetzung für die Clear-Zuweisungen. Beim IAC-Eingang muss <code>Track</code> aus bleiben, sonst landen die Clear-CCs zusätzlich in scharfgeschalteten MIDI-Spuren.</p>
 
   <details class="hw">
+    <summary><span>Audio: für sauber sitzende Loops</span><span class="tag">Tipp</span><span class="chev">▶</span></summary>
+    <div class="hw-body">
+      <p>Der Looper schneidet das Eingangssignal dort mit, wo es in Live ankommt — also um die Eingangslatenz verspätet. Du hörst dein Instrument direkt ohne Verzögerung, die Aufnahme landet aber zu spät im Raster. An der Schleifengrenze trifft dann Material aufeinander, das nicht zusammengehört — hörbar als Knacken oder Versatz beim Übergang.</p>
+      <p>In <code>Einstellungen → Audio → Optionen</code>:</p>
+      <div class="table-wrap"><table class="settings">
+        <thead><tr><th>Einstellung</th><th>Wert</th></tr></thead>
+        <tbody>
+          <tr><td>Verzögerungsausgleich</td><td><b>aus</b></td></tr>
+          <tr><td>Reduced Latency When Monitoring</td><td><b>aus</b></td></tr>
+        </tbody>
+      </table></div>
+      <p>Live kompensiert sonst nur anhand der Latenz, die der Treiber <b>meldet</b> — USB-Interfaces melden sie oft ungenau, der Rest bleibt als Versatz stehen. Wer noch genauer sein will, misst zusätzlich die Treiberfehlerkompensation einmalig ein: einen kurzen, harten Transienten exakt auf einen Taktstrich aufnehmen und in <code>Einstellungen → Audio</code> so lange nachjustieren, bis er im Clip auf dem Strich sitzt.</p>
+      <p class="note warn">⚠️ „Verzögerungsausgleich aus" heißt auch: Live gleicht keine <b>Plugin</b>-Latenzen mehr aus. Solange nichts im Set Latenz meldet — Linearphasen-EQs, Multiband-Kompressoren, manche Amp-Simulationen —, fällt das nicht auf.</p>
+      <p><b>Nicht zu verwechseln:</b> Ein abgeschnittenes Ausklingen am Loop-Ende (ein Becken, eine offene HiHat) ist kein Latenzproblem, sondern eine Eigenheit des Loopers — er nimmt in einen Puffer fester Länge auf. Test: Loop mit leerem letztem Takt aufnehmen. Knackt es trotzdem, ist es der Latenzversatz; ist es sauber und knackt nur beim Durchspielen bis zum Schluss, ist es das Ausklingen.</p>
+    </div>
+  </details>
+
+  <details class="hw">
     <summary><span>Die 24 Zuweisungen für Transport, Stop, Clear</span><span class="tag">Referenz</span><span class="chev">▶</span></summary>
     <div class="hw-body">
       <p>Der <code>State</code>-Parameter des Loopers ließe sich auch direkt per API setzen — das umgeht aber die Quantisierung. <code>Clear</code> ist über die API außerdem gar nicht erreichbar. Beides läuft deshalb über Lives eigenes MIDI-Mapping, das den echten Knopf drückt und selbst sample-genau quantisiert:</p>
@@ -727,6 +745,24 @@
     </tbody>
   </table></div>
   <p><code>Remote</code> is required for the Clear mappings to fire. On the IAC input, <code>Track</code> must stay off, otherwise the Clear CCs would also land on any armed MIDI tracks.</p>
+
+  <details class="hw">
+    <summary><span>Audio: for tight loop seams</span><span class="tag">tip</span><span class="chev">▶</span></summary>
+    <div class="hw-body">
+      <p>The looper cuts the input signal exactly where it arrives in Live — delayed by the input latency. You hear your instrument directly with no delay, but the recording lands too late in the grid. At the loop boundary, material that doesn't belong together then meets — audible as a click or a shift at the transition.</p>
+      <p>In <code>Settings → Audio → Options</code>:</p>
+      <div class="table-wrap"><table class="settings">
+        <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Delay Compensation</td><td><b>off</b></td></tr>
+          <tr><td>Reduced Latency When Monitoring</td><td><b>off</b></td></tr>
+        </tbody>
+      </table></div>
+      <p>Otherwise Live only compensates based on the latency the driver <b>reports</b> — USB interfaces often report it inaccurately, and the rest stays as an offset. For extra precision, also measure the driver error compensation once: record a short, hard transient exactly on a bar line, and adjust in <code>Settings → Audio</code> until it sits on the line in the clip.</p>
+      <p class="note warn">⚠️ "Delay Compensation off" also means Live no longer compensates for <b>plugin</b> latency. As long as nothing in the set reports latency — linear-phase EQs, multiband compressors, some amp sims — this won't be noticeable.</p>
+      <p><b>Don't confuse this with:</b> a cut-off tail at the end of a loop (a cymbal, an open hi-hat) isn't a latency problem, it's a quirk of the looper — it records into a fixed-length buffer. Test: record a loop whose last bar is empty. Still clicks? That's the latency offset. Clean, and only clicks when played through to the end? That's the tail — a playing question, not a setting.</p>
+    </div>
+  </details>
 
   <details class="hw">
     <summary><span>The 24 mappings for Transport, Stop, Clear</span><span class="tag">reference</span><span class="chev">▶</span></summary>
