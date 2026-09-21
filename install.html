@@ -288,6 +288,32 @@
       <p>Live quantisiert danach selbst, genau wie bei einem echten Controller.</p>
     </div>
   </details>
+
+  <details class="hw" open>
+    <summary><span>Die 24 MIDI-Zuweisungen für Transport, Stop, Clear</span><span class="tag">wichtig</span><span class="chev">▶</span></summary>
+    <div class="hw-body">
+      <p>Egal ob Browser, KORG nanoKONTROL2 oder Roland SPD-SX PRO: Alle drei steuern die Looper über <b>dieselben 24 MIDI-Zuweisungen</b> in Live. Ohne sie bleiben Stop und Clear wirkungslos — nur der große Transportknopf ginge auch anders, aber dann ohne Quantisierung. Einmal angelegt, gilt die Einrichtung für alle Eingabewege gleichzeitig.</p>
+      <p>Der <code>State</code>-Parameter des Loopers ließe sich auch direkt per API setzen — das umgeht aber die Quantisierung. <code>Clear</code> ist über die API außerdem gar nicht erreichbar. Beides läuft deshalb über Lives eigenes MIDI-Mapping, das den echten Knopf drückt und selbst sample-genau quantisiert:</p>
+      <div class="table-wrap"><table class="settings">
+        <thead><tr><th>Bedienelement</th><th>CC</th><th>Ziel im Looper</th></tr></thead>
+        <tbody>
+          <tr><td>R 1–8 am nanoKONTROL2</td><td>64–71</td><td>der große Transportknopf</td></tr>
+          <tr><td>S 1–8 am nanoKONTROL2</td><td>32–39</td><td>Stop</td></tr>
+          <tr><td>M 1–8 am nanoKONTROL2</td><td>48–55</td><td>Clear</td></tr>
+        </tbody>
+      </table></div>
+      <p>Die Zuweisung hängt an der Nachricht, nicht am Port: Das SPD-Script sendet dieselben CCs auf Kanal 1 in den IAC-Treiber, der Browser über den Looper-Display-Server ebenso — alle drei Wege treffen dieselben 24 Zuweisungen.</p>
+      <ol class="steps">
+        <li><code>Cmd + M</code> — MIDI-Map-Modus.</li>
+        <li>Großen Transportknopf von Looper 1 anklicken, <b>R1</b> drücken (oder im Browser auf den Ring tippen) → CC 64.</li>
+        <li>Stop-Knopf von Looper 1 anklicken, <b>S1</b> drücken (oder die STOP-Ecke im Browser tippen) → CC 32.</li>
+        <li>Clear-Button von Looper 1 anklicken, <b>M1</b> drücken (oder die CLEAR-Ecke im Browser tippen) → CC 48.</li>
+        <li>Für Looper 2 bis 8 dasselbe mit R2/S2/M2 … R8/S8/M8.</li>
+        <li><code>Cmd + M</code> verlassen, <b>Set speichern</b> — am besten als Standard-Set.</li>
+      </ol>
+      <p class="note warn">⚠️ Solange der Map-Modus aktiv ist und ein Element ausgewählt, legt jede eingehende MIDI-Nachricht eine neue Zuweisung an. R1, S1 und M1 gehören außerdem fest zu Looper 1: Lives Mapping folgt den Bank-Tasten des Pults nicht, nur die Fader tun das.</p>
+    </div>
+  </details>
 </section>
 
 <section id="usage-de">
@@ -460,31 +486,6 @@
       <p><b>Nicht zu verwechseln:</b> Ein abgeschnittenes Ausklingen am Loop-Ende (ein Becken, eine offene HiHat) ist kein Latenzproblem, sondern eine Eigenheit des Loopers — er nimmt in einen Puffer fester Länge auf. Test: Loop mit leerem letztem Takt aufnehmen. Knackt es trotzdem, ist es der Latenzversatz; ist es sauber und knackt nur beim Durchspielen bis zum Schluss, ist es das Ausklingen.</p>
     </div>
   </details>
-
-  <details class="hw">
-    <summary><span>Die 24 Zuweisungen für Transport, Stop, Clear</span><span class="tag">Referenz</span><span class="chev">▶</span></summary>
-    <div class="hw-body">
-      <p>Der <code>State</code>-Parameter des Loopers ließe sich auch direkt per API setzen — das umgeht aber die Quantisierung. <code>Clear</code> ist über die API außerdem gar nicht erreichbar. Beides läuft deshalb über Lives eigenes MIDI-Mapping, das den echten Knopf drückt und selbst sample-genau quantisiert:</p>
-      <div class="table-wrap"><table class="settings">
-        <thead><tr><th>Bedienelement</th><th>CC</th><th>Ziel im Looper</th></tr></thead>
-        <tbody>
-          <tr><td>R 1–8 am nanoKONTROL2</td><td>64–71</td><td>der große Transportknopf</td></tr>
-          <tr><td>S 1–8 am nanoKONTROL2</td><td>32–39</td><td>Stop</td></tr>
-          <tr><td>M 1–8 am nanoKONTROL2</td><td>48–55</td><td>Clear</td></tr>
-        </tbody>
-      </table></div>
-      <p>Die Zuweisung hängt an der Nachricht, nicht am Port: Das SPD-Script sendet dieselben CCs auf Kanal 1 in den IAC-Treiber, der Browser über den Looper-Display-Server ebenso — alle drei Wege treffen dieselben 24 Zuweisungen.</p>
-      <ol class="steps">
-        <li><code>Cmd + M</code> — MIDI-Map-Modus.</li>
-        <li>Großen Transportknopf von Looper 1 anklicken, <b>R1</b> drücken → CC 64.</li>
-        <li>Stop-Knopf von Looper 1 anklicken, <b>S1</b> drücken → CC 32.</li>
-        <li>Clear-Button von Looper 1 anklicken, <b>M1</b> drücken → CC 48.</li>
-        <li>Für Looper 2 bis 8 dasselbe mit R2/S2/M2 … R8/S8/M8.</li>
-        <li><code>Cmd + M</code> verlassen, <b>Set speichern</b> — am besten als Standard-Set.</li>
-      </ol>
-      <p class="note warn">⚠️ Solange der Map-Modus aktiv ist und ein Element ausgewählt, legt jede eingehende MIDI-Nachricht eine neue Zuweisung an. R1, S1 und M1 gehören außerdem fest zu Looper 1: Lives Mapping folgt den Bank-Tasten des Pults nicht, nur die Fader tun das.</p>
-    </div>
-  </details>
 </section>
 
 <section id="grenzen-de">
@@ -589,6 +590,32 @@
         <li>Leave <code>Cmd + M</code>, <b>save the set</b>.</li>
       </ol>
       <p>Live then quantises everything itself, exactly as with a real controller.</p>
+    </div>
+  </details>
+
+  <details class="hw" open>
+    <summary><span>The 24 MIDI mappings for Transport, Stop, Clear</span><span class="tag">important</span><span class="chev">▶</span></summary>
+    <div class="hw-body">
+      <p>Browser, KORG nanoKONTROL2, or Roland SPD-SX PRO — all three control the loopers through <b>the same 24 MIDI mappings</b> in Live. Without them, Stop and Clear do nothing — only the big transport knob could work another way, but then without quantisation. Set up once, the mapping applies to every input method at the same time.</p>
+      <p>The looper's <code>State</code> parameter could also be set directly through the API — but that bypasses quantisation. <code>Clear</code> also isn't reachable through the API at all. Both therefore run through Live's own MIDI Mapping, which presses the real button and quantises itself, sample-accurately:</p>
+      <div class="table-wrap"><table class="settings">
+        <thead><tr><th>Control</th><th>CC</th><th>Target on the looper</th></tr></thead>
+        <tbody>
+          <tr><td>R 1–8 on the nanoKONTROL2</td><td>64–71</td><td>the big transport knob</td></tr>
+          <tr><td>S 1–8 on the nanoKONTROL2</td><td>32–39</td><td>Stop</td></tr>
+          <tr><td>M 1–8 on the nanoKONTROL2</td><td>48–55</td><td>Clear</td></tr>
+        </tbody>
+      </table></div>
+      <p>The mapping is tied to the message, not the port: the SPD script sends the same CCs on channel 1 into the IAC driver, and so does the browser via the LooperDisplay server — all three paths hit the same 24 mappings.</p>
+      <ol class="steps">
+        <li><code>Cmd + M</code> — MIDI Map Mode.</li>
+        <li>Click looper 1's big transport knob, press <b>R1</b> (or tap the ring in the browser) → CC 64.</li>
+        <li>Click looper 1's Stop button, press <b>S1</b> (or tap the STOP corner in the browser) → CC 32.</li>
+        <li>Click looper 1's Clear button, press <b>M1</b> (or tap the CLEAR corner in the browser) → CC 48.</li>
+        <li>Repeat for loopers 2 through 8 with R2/S2/M2 … R8/S8/M8.</li>
+        <li>Leave <code>Cmd + M</code>, <b>save the set</b> — ideally as the default set.</li>
+      </ol>
+      <p class="note warn">⚠️ While Map Mode is active and an element is selected, every incoming MIDI message creates a new mapping. R1, S1 and M1 are also fixed to looper 1: Live's mapping doesn't follow the controller's bank buttons, only the faders do.</p>
     </div>
   </details>
 </section>
@@ -761,31 +788,6 @@
       <p>Otherwise Live only compensates based on the latency the driver <b>reports</b> — USB interfaces often report it inaccurately, and the rest stays as an offset. For extra precision, also measure the driver error compensation once: record a short, hard transient exactly on a bar line, and adjust in <code>Settings → Audio</code> until it sits on the line in the clip.</p>
       <p class="note warn">⚠️ "Delay Compensation off" also means Live no longer compensates for <b>plugin</b> latency. As long as nothing in the set reports latency — linear-phase EQs, multiband compressors, some amp sims — this won't be noticeable.</p>
       <p><b>Don't confuse this with:</b> a cut-off tail at the end of a loop (a cymbal, an open hi-hat) isn't a latency problem, it's a quirk of the looper — it records into a fixed-length buffer. Test: record a loop whose last bar is empty. Still clicks? That's the latency offset. Clean, and only clicks when played through to the end? That's the tail — a playing question, not a setting.</p>
-    </div>
-  </details>
-
-  <details class="hw">
-    <summary><span>The 24 mappings for Transport, Stop, Clear</span><span class="tag">reference</span><span class="chev">▶</span></summary>
-    <div class="hw-body">
-      <p>The looper's <code>State</code> parameter could also be set directly through the API — but that bypasses quantisation. <code>Clear</code> also isn't reachable through the API at all. Both therefore run through Live's own MIDI Mapping, which presses the real button and quantises itself, sample-accurately:</p>
-      <div class="table-wrap"><table class="settings">
-        <thead><tr><th>Control</th><th>CC</th><th>Target on the looper</th></tr></thead>
-        <tbody>
-          <tr><td>R 1–8 on the nanoKONTROL2</td><td>64–71</td><td>the big transport knob</td></tr>
-          <tr><td>S 1–8 on the nanoKONTROL2</td><td>32–39</td><td>Stop</td></tr>
-          <tr><td>M 1–8 on the nanoKONTROL2</td><td>48–55</td><td>Clear</td></tr>
-        </tbody>
-      </table></div>
-      <p>The mapping is tied to the message, not the port: the SPD script sends the same CCs on channel 1 into the IAC driver, and so does the browser via the LooperDisplay server — all three paths hit the same 24 mappings.</p>
-      <ol class="steps">
-        <li><code>Cmd + M</code> — MIDI Map Mode.</li>
-        <li>Click looper 1's big transport knob, press <b>R1</b> → CC 64.</li>
-        <li>Click looper 1's Stop button, press <b>S1</b> → CC 32.</li>
-        <li>Click looper 1's Clear button, press <b>M1</b> → CC 48.</li>
-        <li>Repeat for loopers 2 through 8 with R2/S2/M2 … R8/S8/M8.</li>
-        <li>Leave <code>Cmd + M</code>, <b>save the set</b> — ideally as the default set.</li>
-      </ol>
-      <p class="note warn">⚠️ While Map Mode is active and an element is selected, every incoming MIDI message creates a new mapping. R1, S1 and M1 are also fixed to looper 1: Live's mapping doesn't follow the controller's bank buttons, only the faders do.</p>
     </div>
   </details>
 </section>
