@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Looper Display – Installation</title>
+<style>
+  :root {
+    --bg: #0b0b0d; --fg: #f2f2f2; --dim: #9a9aa2; --ring-bg: #222226;
+    --stop: #55555c; --record: #ff3b30; --play: #34c759; --overdub: #0a84ff;
+    --warn: #ffd60a; --bar: #ff9f0a; --card: #17171a;
+  }
+  html, body { margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.5; }
+  body { padding: 28px 20px 64px; max-width: 720px; margin: 0 auto; }
+  a { color: inherit; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    margin-bottom: 8px; flex-wrap: wrap; }
+  header h1 { font-size: 22px; margin: 0; display: flex; align-items: center; gap: 12px; }
+  header h1 img { width: 34px; height: 34px; border-radius: 8px; }
+  header nav { display: flex; gap: 18px; font-size: 14px; }
+  header nav a { color: var(--dim); text-decoration: none; }
+  header nav a:hover { color: var(--warn); }
+  .subtitle { color: var(--dim); font-size: 15px; margin: 0 0 32px; }
+  h2 { font-size: 17px; margin: 40px 0 12px; border-top: 1px solid var(--ring-bg); padding-top: 24px;
+    display: flex; align-items: center; gap: 10px; }
+  h2:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+  .stepnum { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px;
+    border-radius: 50%; background: var(--warn); color: var(--bg); font-size: 14px; font-weight: 800; flex: none; }
+  p { color: var(--dim); font-size: 15px; }
+  code { background: var(--card); color: var(--fg); padding: 2px 7px; border-radius: 5px;
+    font: 600 13px ui-monospace, "SF Mono", Menlo, monospace; }
+  pre { background: var(--card); border-radius: 10px; padding: 14px 16px; overflow-x: auto;
+    font: 500 13px ui-monospace, "SF Mono", Menlo, monospace; color: var(--fg); }
+  ol.steps { color: var(--dim); font-size: 14px; padding-left: 22px; margin: 12px 0; display: grid; gap: 8px; }
+  ol.steps li::marker { color: var(--fg); font-weight: 600; }
+  ul.keys { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 10px; }
+  ul.keys li { background: var(--card); border-radius: 10px; padding: 10px 14px;
+    display: flex; align-items: baseline; gap: 12px; font-size: 14px; }
+  ul.keys li b { color: var(--fg); flex: none; min-width: 170px; }
+  ul.keys li span { color: var(--dim); }
+  table.settings { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  table.settings th, table.settings td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--ring-bg); }
+  table.settings th { color: var(--dim); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
+  table.settings td { color: var(--fg); }
+  table.settings tbody tr:last-child td { border-bottom: none; }
+  p.warn-note { background: var(--card); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0;
+    padding: 10px 14px; font-size: 13px; }
+  p.ok-note { background: var(--card); border-left: 3px solid var(--play); border-radius: 0 8px 8px 0;
+    padding: 10px 14px; font-size: 13px; }
+  .filetree { background: var(--card); border-radius: 10px; padding: 16px 18px; font: 500 13px ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--dim); white-space: pre; overflow-x: auto; }
+  .filetree b { color: var(--fg); }
+  .screenshot { width: 100%; border-radius: 14px; margin: 0 0 32px; display: block; }
+  footer { margin-top: 48px; text-align: center; color: var(--dim); font-size: 13px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--warn); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1><img src="public/icon-512.png" alt=""> Looper Display – Installation</h1>
+  <nav>
+    <a href="install-en.html">🇬🇧 English</a>
+    <a href="https://buymeacoffee.com/hennydrums" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+  </nav>
+</header>
+<img class="screenshot" src="assets/screenshot.png" alt="Looper Display im Browser: drei Ringe zeigen Play, Record und Stop">
+<p class="subtitle">Looper Display ist ein Tool, das die ersten acht Looper in
+   einem Ableton-Projekt erkennt und ihren Zustand als drehende Ringe in
+   einer Weboberfläche visualisiert, die über das Intranet auch auf
+   anderen Endgeräten (iPad, iPhone etc.) funktioniert.</p>
+<p class="subtitle">Über diese Weboberfläche lassen sich die Looper auch
+   direkt bedienen — antippen, dazu Stop und Clear über die Eck-Tasten.
+   Dafür sind nur ein paar MIDI-Zuweisungen in Live nötig, den Rest
+   übernimmt automatisch das Remote Script.</p>
+<p class="subtitle">Zusätzlich und optional lassen sich die Looper auch
+   über echte Hardware bedienen: über ein <b>KORG nanoKONTROL2</b> (mit
+   LED-Rückmeldung) und/oder ein <b>Roland SPD-SX PRO</b> (per Pad). Beide
+   lösen dieselben Zuweisungen aus wie die Bedienung im Browser und
+   dürfen gleichzeitig laufen. Das KORG bietet zudem die Möglichkeit,
+   alle Looper gleichzeitig zu starten und zu stoppen, sowie die
+   Lautstärke-Fader in Ableton pro Looper zu bedienen.</p>
+
+<h2>Was du bekommst</h2>
+<div class="filetree"><b>Looper-Display starten.command</b>     Doppelklick startet sie
+<b>Looper-Display beenden.command</b>     Doppelklick beendet sie wieder
+
+<b>Zum Kopieren/</b>                    einmalig an den Zielort kopieren, siehe Schritt 1
+├── Remote Scripts/
+│   ├── <b>LooperDisplay/</b>           Pflicht: liefert die Daten an die Anzeige
+│   └── <b>SPD_SX_Pro_Looper/</b>       optional: nur mit einem Roland SPD-SX
+└── <b>SPD-SX Pro Preset/</b>           optional: fertiges Kit zum Import auf das SPD-SX
+
+<b>Programm (nicht anfassen)/</b>       die App selbst — nichts davon löschen oder verschieben
+├── looper-display
+└── node_modules/</div>
+<p>Die App selbst ist eine fertige Programmdatei für Apple-Silicon-Macs
+   (M-Prozessoren). Kein Node.js, kein <code>npm install</code>, kein
+   Terminal-Wissen nötig. Der Ordner <code>Programm (nicht anfassen)</code>
+   muss dabei so bleiben, wie er ist — <code>node_modules</code> darin
+   enthält die MIDI-Anbindung für die Bedienung einzelner Looper aus dem
+   Browser.</p>
+
+<h2><span class="stepnum">1</span> Remote Script kopieren</h2>
+<p>Den Ordner <code>Zum Kopieren/Remote Scripts/LooperDisplay</code> nach</p>
+<pre>~/Music/Ableton/User Library/Remote Scripts/</pre>
+<p>kopieren. Hast du zusätzlich ein Roland SPD-SX PRO, den Ordner
+   <code>Zum Kopieren/Remote Scripts/SPD_SX_Pro_Looper</code> gleich mit
+   dorthin.</p>
+
+<h2><span class="stepnum">2</span> Ableton Live einrichten</h2>
+<ol class="steps">
+  <li>Live starten (oder neu starten, falls es schon offen war — Remote
+    Scripts werden nur beim Programmstart eingelesen).</li>
+  <li><code>Einstellungen → Link, Tempo &amp; MIDI</code> öffnen.</li>
+  <li>In einer freien Zeile der Bedienoberflächen <code>LooperDisplay</code>
+    auswählen.</li>
+</ol>
+<table class="settings">
+  <thead><tr><th>Bedienoberfläche</th><th>Eingang</th><th>Ausgang</th></tr></thead>
+  <tbody><tr><td><code>LooperDisplay</code></td><td>Kein</td><td>Kein</td></tr></tbody>
+</table>
+<p class="ok-note">✅ Ohne eigene Hardware bleiben Eingang und Ausgang auf
+   „Kein" — ein KORG nanoKONTROL2 ist optional. Auch ohne angeschlossenes
+   Gerät liefert das Script trotzdem alle Daten für die Anzeige.</p>
+<p>Hast du ein <b>echtes KORG nanoKONTROL2</b> im Rig, dort stattdessen
+   die passenden Ports einstellen, sonst bleiben Tasten und LEDs am Gerät
+   ohne Wirkung:</p>
+<table class="settings">
+  <thead><tr><th>Bedienoberfläche</th><th>Eingang</th><th>Ausgang</th></tr></thead>
+  <tbody><tr><td><code>LooperDisplay</code></td><td>nanoKONTROL2 (SLIDER/KNOB)</td><td>nanoKONTROL2 (CTRL)</td></tr></tbody>
+</table>
+
+<h2><span class="stepnum">3</span> App starten</h2>
+<p>Im <b>Finder</b> zu diesem Ordner wechseln und dort doppelklicken auf
+   <code>Looper-Display starten.command</code>.</p>
+<ol class="steps">
+  <li>Beim allerersten Mal blockiert macOS das mit „kann nicht geöffnet
+    werden, da der Entwickler nicht verifiziert werden kann". Das ist
+    normal bei selbst gebauten Programmen ohne teures Apple-Zertifikat.</li>
+  <li>Im Finder mit <b>Rechtsklick</b> auf die Datei → <b>„Öffnen"</b> →
+    im Dialog noch einmal <b>„Öffnen"</b> bestätigen. Das genügt einmalig,
+    danach funktioniert der normale Doppelklick.</li>
+  <li>Kurz erscheint ein Terminal-Fenster, minimiert sich dann von selbst,
+    und ein Browser-Tab mit der Anzeige öffnet automatisch.</li>
+</ol>
+<p class="warn-note">Beim allerersten Start fragt macOS zusätzlich einmalig,
+   ob „osascript" das Terminal steuern darf — dafür wird das Fenster
+   minimiert und später wieder geschlossen. Bitte erlauben. Ohne diese
+   Erlaubnis läuft die App trotzdem, das Fenster bleibt dann nur offen.</p>
+<p>Für ein Tablet zusätzlich die zweite, im (minimierten) Terminal-Fenster
+   angezeigte Adresse dort in Safari öffnen:</p>
+<pre>Anzeige: http://localhost:8080
+         http://192.168.0.XXX:8080  (fuer Tablet/Handy)</pre>
+
+<h2><span class="stepnum">4</span> Auf dem Tablet einrichten (optional)</h2>
+<p>Für eine Anzeige ganz ohne Browser-Oberfläche: die zweite Adresse in
+   Safari öffnen, <b>Teilen-Symbol → „Zum Home-Bildschirm"</b> — nicht
+   „Zu Lesezeichen hinzufügen". Danach startet die Seite über das neue
+   Symbol komplett ohne Adressleiste. Mehr dazu, sobald die App läuft,
+   unter „❓ Help" oben rechts in der Anzeige.</p>
+
+<h2>Wie beendest du es wieder?</h2>
+<p>Im <b>Finder</b> doppelklicken auf <code>Looper-Display beenden.command</code>
+   — findet und beendet die App, auch wenn das (minimierte) Terminal-Fenster
+   längst aus den Augen ist. Das Fenster schließt sich danach von selbst mit.</p>
+<p>Zwei weitere, gleichwertige Wege: <b>⏻ Server beenden</b> oben rechts in
+   der Anzeige selbst, oder <b>Ctrl + C</b> im (wieder eingeblendeten)
+   Terminal-Fenster.</p>
+<p>Schließt du nur den Browser-Tab mit der Anzeige, läuft die App im
+   Hintergrund weiter — das ist meistens gewollt, falls ein Tablet die
+   Seite dauerhaft offen halten soll.</p>
+
+<h2>Bedienung einzelner Looper aus dem Browser (optional, mit Einrichtung)</h2>
+<p>Jeder Ring lässt sich antippen, dazu gibt es Tasten für Stop und Clear.
+   Das braucht — anders als die vier Transporttasten oben in der Anzeige —
+   eine kleine einmalige Einrichtung, weil Ableton Loopern keinen direkten
+   „stoppe quantisiert" oder „lösche" Befehl über die API erlaubt. Der Weg
+   dahin: ein virtueller MIDI-Bus, den die App bedient, und eine ganz
+   normale MIDI-Zuweisung in Live, wie du sie auch mit jedem Controller
+   machen würdest.</p>
+<ol class="steps">
+  <li><b>Audio-MIDI-Setup</b> öffnen (Spotlight-Suche), Fenster
+    „MIDI-Studio" einblenden, doppelt auf „IAC-Treiber" klicken,
+    <b>„Gerät ist online"</b> anhaken. Ein Bus reicht.</li>
+  <li>In Live, bei den MIDI-Ports: Eingang <code>IAC-Treiber (Bus 1)</code>
+    — <b>Remote an</b>, <b>Track aus</b>.</li>
+  <li><code>Cmd + M</code> in Live (Map-Modus). Für jeden Looper: großen
+    Transportknopf anklicken, kurz im Browser auf den Ring tippen —
+    Zuweisung entsteht automatisch. Ebenso für die STOP- und
+    CLEAR-Ecktasten.</li>
+  <li><code>Cmd + M</code> verlassen, <b>Set speichern</b>.</li>
+</ol>
+<p>Live quantisiert danach selbst, genau wie bei einem echten Controller.</p>
+
+<h2>Optional: KORG nanoKONTROL2 einrichten</h2>
+<p>Bedienoberfläche <code>LooperDisplay</code> (Schritt 2) mit Eingang
+   <code>nanoKONTROL2 (SLIDER/KNOB)</code> und Ausgang
+   <code>nanoKONTROL2 (CTRL)</code> statt „Kein". Zwei Dinge müssen dafür
+   am Controller selbst stimmen:</p>
+<ul class="keys">
+  <li><b>Auslieferungszustand</b><span>der Controller muss auf den Werks-CCs senden (z. B. S = CC 32–39) — nach eigenen Scenes im KORG KONTROL Editor einmal zurücksetzen</span></li>
+  <li><b>LED Mode = External</b><span>im KORG KONTROL Editor setzen und per „Communication → Write Scene Data" in den Controller schreiben, sonst bleiben die LEDs dunkel</span></li>
+</ul>
+<p class="warn-note">Auf dem Mac sind die „Communication"-Menüpunkte im
+   KORG KONTROL Editor oft nicht anklickbar (getestet mit macOS 26 auf
+   Apple Silicon). Abhilfe: die Einstellung einmalig auf einem
+   Windows-Rechner schreiben — danach steckt sie dauerhaft im Controller,
+   der Mac braucht den Editor nie wieder.</p>
+
+<h2>Optional: Roland SPD-SX PRO einrichten</h2>
+<p>Zweites Remote Script, Ordner <code>Zum Kopieren/Remote Scripts/SPD_SX_Pro_Looper</code>
+   ebenfalls nach <code>~/Music/Ableton/User Library/Remote Scripts/</code>
+   kopieren. In einer weiteren freien Zeile der Bedienoberflächen:</p>
+<table class="settings">
+  <thead><tr><th>Bedienoberfläche</th><th>Eingang</th><th>Ausgang</th></tr></thead>
+  <tbody><tr><td><code>SPD_SX_Pro_Looper</code></td><td>SPD-SX PRO</td><td>IAC-Treiber Bus 1</td></tr></tbody>
+</table>
+<p>Der Ausgang geht nicht an das SPD, sondern in dieselbe IAC-Schleife wie
+   beim nanoKONTROL2. Am Gerät müssen neun Pads auf feste Noten (Kanal 1)
+   programmiert sein.</p>
+
+<h3>Fertiges Preset statt von Hand programmieren</h3>
+<p>Im Ordner <code>Zum Kopieren/SPD-SX Pro Preset</code> liegt
+   die Kit-Datei <code>KIT-APP_LooperDisplay.TD0</code> — sie enthält alle
+   neun Pad-Zuweisungen fertig eingerichtet.</p>
+<ol class="steps">
+  <li>SPD-SX PRO per USB verbinden, <b>SPD-SX PRO APP</b> öffnen
+    (kostenlos von Roland, verbindet automatisch mit dem Gerät).</li>
+  <li>Menü <code>BACKUP → LOAD 1 KIT</code>.</li>
+  <li>Im Dialog „BACKUP LOAD 1 KIT (FROM FILE)" über <code>…</code> die
+    Datei <code>KIT-APP_LooperDisplay.TD0</code> auswählen, <b>OK</b>.</li>
+  <li>Oben rechts auf <b>WRITE</b> klicken — schreibt den geladenen Kit
+    auf das Gerät.</li>
+</ol>
+<p>Zur Kontrolle oder falls von Hand programmiert werden soll, die
+   Pad-Belegung des Presets:</p>
+<table class="settings">
+  <thead><tr><th>Pad</th><th>Note</th><th>Funktion (Bezeichnung im Preset)</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>1</td><td>Loop DELETE — Clear</td></tr>
+    <tr><td>2</td><td>4</td><td>START ALL Loops — alle Looper starten, sofort</td></tr>
+    <tr><td>3</td><td>62</td><td>SONG START/STOP — nicht vom Script, Lives Transport direkt</td></tr>
+    <tr><td>4</td><td>2</td><td>Loop STOP — Stop</td></tr>
+    <tr><td>5</td><td>5</td><td>STOP ALL LOOPER — alle Looper stoppen, quantisiert</td></tr>
+    <tr><td>6</td><td>65</td><td>LOOPING Toggle — nicht vom Script, Loop in der Arrangement-Ansicht über AbleSet</td></tr>
+    <tr><td>7</td><td>3</td><td>Loop GO — Start / Record / Overdub</td></tr>
+    <tr><td>8</td><td>6</td><td>PREV Looper — ◀ vorheriger Looper</td></tr>
+    <tr><td>9</td><td>68</td><td>NEXT Looper — nächster Looper ▶</td></tr>
+  </tbody>
+</table>
+
+<h2>Grenzen</h2>
+<ul class="keys">
+  <li><b>Leer oder gefüllt</b><span>verrät die Live-API nicht — die Anzeige zeigt es nur nach eigener Messung oder Klick</span></li>
+  <li><b>Netzwerk</b><span>App und Live müssen im selben Netz laufen, sie hört per UDP mit — das geht nicht über das Internet</span></li>
+  <li><b>Architektur</b><span>getestet auf Apple-Silicon-Macs; für Intel-Macs oder Windows bitte melden</span></li>
+</ul>
+
+<footer>
+  Diese Anzeige ist für den persönlichen, nicht-kommerziellen Gebrauch
+  gedacht. Weitergabe an Freunde und Bandkollegen ausdrücklich erwünscht,
+  Weiterverkauf oder Veröffentlichung als eigenes Produkt bitte nicht ohne
+  Rücksprache.<br><br>
+  <a href="install-en.html">🇬🇧 English</a> ·
+  <a href="https://buymeacoffee.com/hennydrums" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+</footer>
+</body>
+</html>
