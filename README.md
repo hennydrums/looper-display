@@ -1,9 +1,10 @@
 # Looper Display
 
-> **Schöner zu lesen:** Doppelklick auf [`install.html`](install.html)
+> **Schöner zu lesen:** ist die [`install.html`](install.html)
 > (Deutsch) oder [`install-en.html`](install-en.html) (English) öffnet
 > dieselbe Anleitung als gestaltete Webseite mit Schritt-für-Schritt-Zahlen.
 > Dieses Dokument hier ist die reine Textversion zum Nachschlagen.
+> Kopiere diesen Ordner auf dein macBook und öffne die install.html
 
 Zeigt den Zustand aller Looper eines Ableton-Live-Sets als drehende Ringe im
 Browser: auf dem Mac, auf einem zweiten Monitor oder auf jedem Tablet im
