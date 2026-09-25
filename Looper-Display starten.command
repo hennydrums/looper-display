@@ -12,6 +12,15 @@
 # Fenster dann offen und muss von Hand geschlossen werden.
 cd "$(dirname "$0")"
 APP="Programm (nicht anfassen)/looper-display"
+
+# Nach dem Herunterladen und Entpacken markiert macOS jede einzelne
+# Binaerdatei als "aus dem Internet" (Quarantaene) -- das betrifft nicht
+# nur looper-display selbst, sondern auch die MIDI-Bibliothek in
+# node_modules. Ohne dieses Aufraeumen wuerde jede davon einzeln mit
+# "kann nicht geoeffnet werden" blockiert. Betrifft nur eigene Dateien,
+# braucht daher keine Admin-Rechte.
+xattr -cr "Programm (nicht anfassen)" 2>/dev/null
+
 if [ ! -x "$APP" ]; then
   echo "$APP fehlt oder ist nicht ausfuehrbar. Liegt diese Datei im selben Ordner wie \"Programm (nicht anfassen)\"?"
   read -k 1 "?Taste druecken zum Schliessen"
