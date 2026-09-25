@@ -322,12 +322,19 @@
   <p>Im <b>Finder</b> zu diesem Ordner wechseln und dort doppelklicken auf
      <code>Looper-Display starten.command</code>.</p>
   <ol class="steps">
-    <li>Beim allerersten Mal blockiert macOS das mit „kann nicht geöffnet
-      werden, da der Entwickler nicht verifiziert werden kann". Das ist
-      normal bei selbst gebauten Programmen ohne teures Apple-Zertifikat.</li>
+    <li>Beim allerersten Mal blockiert macOS das mit einer Meldung, dass der
+      Entwickler nicht verifiziert werden kann oder dass Apple nicht prüfen
+      kann, ob die App Schadsoftware enthält. Das ist normal bei selbst
+      gebauten Programmen ohne teures Apple-Zertifikat.</li>
     <li>Im Finder mit <b>Rechtsklick</b> auf die Datei → <b>„Öffnen"</b> →
-      im Dialog noch einmal <b>„Öffnen"</b> bestätigen. Das genügt einmalig,
-      danach funktioniert der normale Doppelklick.</li>
+      im Dialog noch einmal <b>„Öffnen"</b> bestätigen.</li>
+    <li>Bleibt dabei kein „Öffnen"-Knopf sichtbar (nur „Verschieben in den
+      Papierkorb" / „Abbrechen"): <b>Systemeinstellungen → Datenschutz &amp;
+      Sicherheit</b> öffnen und ganz nach unten scrollen — dort erscheint ein
+      Hinweis zur blockierten App mit einem Button <b>„Trotzdem öffnen"</b>.
+      Anklicken, Passwort bzw. Touch ID bestätigen, im nächsten Dialog noch
+      einmal <b>„Öffnen"</b>. Das genügt einmalig, danach funktioniert der
+      normale Doppelklick.</li>
     <li>Kurz erscheint ein Terminal-Fenster, minimiert sich dann von selbst,
       und ein Browser-Tab mit der Anzeige öffnet automatisch.</li>
   </ol>
@@ -778,12 +785,19 @@
   <p>In <b>Finder</b>, go to this folder and double-click
      <code>Looper-Display starten.command</code> there.</p>
   <ol class="steps">
-    <li>The very first time, macOS will block it with "cannot be opened
-      because the developer cannot be verified". That's normal for
-      self-built programs without an expensive Apple certificate.</li>
+    <li>The very first time, macOS will block it with a message that the
+      developer cannot be verified, or that Apple cannot check the app for
+      malicious software. That's normal for self-built programs without an
+      expensive Apple certificate.</li>
     <li>In Finder, <b>right-click</b> the file → <b>"Open"</b> → confirm
-      <b>"Open"</b> again in the dialog. That's needed only once; after that,
-      a normal double-click works.</li>
+      <b>"Open"</b> again in the dialog.</li>
+    <li>If no "Open" button shows up there (only "Move to Trash" /
+      "Cancel"): open <b>System Settings → Privacy &amp; Security</b> and
+      scroll all the way down — a notice about the blocked app appears there
+      with an <b>"Open Anyway"</b> button. Click it, confirm with your
+      password or Touch ID, then click <b>"Open"</b> once more in the next
+      dialog. That's needed only once; after that, a normal double-click
+      works.</li>
     <li>A terminal window briefly appears, then minimizes itself, and a
       browser tab with the display opens automatically.</li>
   </ol>
