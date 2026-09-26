@@ -61,7 +61,7 @@ kein `npm install`, kein Terminal nötig.
 
 ## Wie beendest du es wieder?
 
-**⏻ Server beenden** oben rechts in der Anzeige. Nur den Browser-Tab zu
+**⏻ Quit server** oben rechts in der Anzeige. Nur den Browser-Tab zu
 schließen beendet die App nicht, sie läuft im Hintergrund weiter — meist
 gewollt, falls ein Tablet die Seite dauerhaft offen halten soll. Ein
 erneuter Doppelklick auf die App öffnet die Anzeige wieder.
@@ -93,7 +93,7 @@ MIDI-Zuweisung in Live, wie du sie auch mit jedem Controller machen würdest.
    - großen Transportknopf anklicken, kurz im Browser auf den Ring tippen
      → Zuweisung entsteht automatisch.
    - Stop-Knopf des Loopers anklicken, im Browser die STOP-Ecke tippen.
-   - Clear-Button des Loopers anklicken, im Browser die CLEAR-Ecke tippen.
+   - Clear-Button des Loopers anklicken, im Browser die Mülleimer-Ecke (🗑) tippen.
 4. `Cmd+M` verlassen, **Set speichern**.
 
 Live quantisiert danach selbst, genau wie bei einem echten Controller —

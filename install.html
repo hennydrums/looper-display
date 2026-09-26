@@ -346,7 +346,7 @@
      <b>📱 Tablet</b> (oben rechts in der Anzeige) in Safari öffnen, <b>Teilen-Symbol → „Zum Home-Bildschirm"</b> — nicht
      „Zu Lesezeichen hinzufügen". Danach startet die Seite über das neue
      Symbol komplett ohne Adressleiste.</p>
-  <p class="note warn">📱 Auf iPhone und iPad blendet der Vollbild-Button
+  <p class="note warn">📱 Auf iPhone und iPad blendet der Fullscreen-Button
      Safaris Adressleiste nie zuverlässig aus — eine Einschränkung des
      Browsers, kein Fehler dieser Seite. Der Weg über „Zum Home-Bildschirm"
      oben klappt garantiert: Safari danach verlassen, auf dem echten
@@ -354,12 +354,12 @@
      tippen — nicht auf einen Safari-Tab oder eine Lesezeichen-Kachel.</p>
 
   <h3 id="beenden-de">Wie beendest du es wieder?</h3>
-  <p>Am einfachsten: <b>⏻ Server beenden</b> oben rechts in der Anzeige
+  <p>Am einfachsten: <b>⏻ Quit server</b> oben rechts in der Anzeige
      selbst, nach kurzer Rückfrage.</p>
   <p>Schließt du nur den Browser-Tab, läuft die App im Hintergrund weiter —
      das ist meistens gewollt, falls ein Tablet die Seite dauerhaft offen
      halten soll. Zum Beenden später einfach die App erneut öffnen (das
-     öffnet die Anzeige) und dort <b>⏻ Server beenden</b> wählen.</p>
+     öffnet die Anzeige) und dort <b>⏻ Quit server</b> wählen.</p>
 
   <h3 id="mappings-de"><span class="stepnum">6</span> Die 24 Zuweisungen für Transport, Stop, Clear</h3>
   <p class="note ok">💡 Am einfachsten mit dem <b>🧭 Setup-Assistenten</b> — sobald die App läuft, verlinkt „❓ Help" oben in der Anzeige dorthin. Er führt Schritt für Schritt durch alle 24 Zuweisungen, statt die Tabelle unten von Hand abzuarbeiten.</p>
@@ -491,7 +491,7 @@
          IAC-Treiber manchmal wieder aus. Reagieren Stop und Clear aus dem Browser
          dann nicht, obwohl IAC wieder online ist: Der Server liest die
          Geräteliste nur beim eigenen Start ein. Erst IAC online schalten,
-         <b>dann</b> den Server einmal neu starten (⏻ Server beenden, danach
+         <b>dann</b> den Server einmal neu starten (⏻ Quit server, danach
          <code>LooperDisplay.app</code> erneut öffnen) — warten allein
          reicht nicht. Die Transport-Leiste oben bleibt davon unberührt, die
          läuft über die Live-API, nicht über MIDI.</p>
@@ -515,7 +515,7 @@
     <li><code>Cmd + M</code> in Live (Map-Modus). Für jeden Looper: großen
       Transportknopf anklicken, kurz im Browser auf den Ring tippen —
       Zuweisung entsteht automatisch. Ebenso für die STOP- und
-      CLEAR-Ecktasten.</li>
+      Mülleimer-Ecktasten (🗑).</li>
     <li><code>Cmd + M</code> verlassen, <b>Set speichern</b>.</li>
   </ol>
   <p>Live quantisiert danach selbst, genau wie bei einem echten Controller.</p>
@@ -550,7 +550,7 @@
     <div class="row"><div class="swatch" style="border-color: var(--dim); background: transparent; border-style: dashed;"></div>
       <div><b>Länge unbekannt</b><br><span>Außenring gestrichelt; auf den inneren Kreis <b>lange drücken</b> schaltet die Taktzahl von Hand durch</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--stop); background: var(--stop);"></div>
-      <div><b>Leer</b><br><span>nur dünne Konturen und „LEER" — auch wenn der Looper formal auf Play steht; darunter die am Looper voreingestellte Aufnahmelänge, z. B. „[4 Takte]" (Live 12)</span></div></div>
+      <div><b>Leer</b><br><span>nur dünne Konturen und „– –" — auch wenn der Looper formal auf Play steht; darunter die am Looper voreingestellte Aufnahmelänge, z. B. „[4 bars]" (Live 12)</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--accent); background: transparent;"></div>
       <div><b>SPD-Auswahl</b><br><span>gelber Rahmen und das Schild „SPD" zeigen den am SPD-SX gewählten Looper</span></div></div>
   </div>
@@ -561,21 +561,21 @@
     <li><b>Inneren Kreis zweimal schnell tippen</b><span>stoppt den Looper — Ableton behandelt zwei rasche Klicks auf den Transportknopf selbst als „Doppelklick zum Stoppen", auch wenn sie aus der Ferne über MIDI ankommen</span></li>
     <li><b>Inneren Kreis halten (0,6 s)</b><span>Taktzahl von Hand durchschalten (1, 2, 4, 8, 16), wenn die Länge unbekannt ist</span></li>
     <li><b>Ecktaste STOP</b><span>unten links am Ring — stoppt am Ende des Loops, siehe unten</span></li>
-    <li><b>Ecktaste CLEAR</b><span>unten rechts am Ring — Looper löschen</span></li>
-    <li><b>Taste F / Button „Vollbild"</b><span>Vollbild an/aus</span></li>
+    <li><b>Ecktaste 🗑 (Mülleimer)</b><span>unten rechts am Ring — Looper löschen</span></li>
+    <li><b>Taste F / Button „Fullscreen"</b><span>Vollbild an/aus</span></li>
     <li><b>Taste R</b><span>Looper im Set neu suchen, nach einem Umbau</span></li>
     <li><b>„📱 Tablet"</b><span>zeigt die Adresse, unter der Tablet oder Handy im selben WLAN die Anzeige öffnen</span></li>
-    <li><b>„⏻ Server beenden"</b><span>beendet den Server, nach Rückfrage — alle offenen Tabs und Tablets zeigen danach „Server wurde beendet"; neu starten per Doppelklick auf <code>LooperDisplay.app</code> am Rechner selbst</span></li>
+    <li><b>„⏻ Quit server"</b><span>beendet den Server, nach Rückfrage — alle offenen Tabs und Tablets zeigen danach „The server was quit from the display"; neu starten per Doppelklick auf <code>LooperDisplay.app</code> am Rechner selbst</span></li>
   </ul>
   <p>Live führt den Transportknopf erst am nächsten Taktstrich aus. Bis dahin
-     pulsiert die getippte Stelle hell mit „WARTET" — so ist sofort sichtbar,
+     pulsiert die getippte Stelle hell mit „WAITING" — so ist sofort sichtbar,
      dass der Tipp angekommen ist, auch wenn noch nichts passiert.</p>
   <h4>Stop spielt den Loop zu Ende</h4>
   <p>Stop bricht nicht am nächsten Taktstrich ab, sondern lässt den Loop bis
      zu seinem Ende laufen: Ein 4-Takter, gestoppt in Takt 1, spielt noch bis
      Takt 4. Das gilt für die Ecktaste STOP, die S-Tasten am nanoKONTROL2 und
-     das Stop-Pad am SPD-SX. Solange er wartet, pulsiert STOP mit „WARTET",
-     im Ring steht „stoppt am Ende", und am nanoKONTROL2 blinkt S schnell.</p>
+     das Stop-Pad am SPD-SX. Solange er wartet, pulsiert STOP mit „WAITING",
+     im Ring steht „waiting", und am nanoKONTROL2 blinkt S schnell.</p>
   <ul class="keys">
     <li><b>Stop zweimal drücken</b><span>stoppt doch schon am nächsten Taktstrich — für den Fall, dass es schneller gehen muss</span></li>
     <li><b>„alle Looper stoppen" am SPD-SX</b><span>alle stoppen gemeinsam, wenn der längste laufende Loop zu Ende ist</span></li>
@@ -601,10 +601,11 @@
      die Live-API, ohne dass dafür etwas eingerichtet werden muss.</p>
 
   <h3 id="metronom-de">Das Metronom</h3>
-  <p>Zwischen den Transporttasten und Tempo/Takt zeigt eine Reihe von Balken
+  <p>Neben den Transporttasten, auf gleicher Höhe, zeigt eine Reihe von Balken
      das Metronom — ein Balken pro Schlag im aktuellen Takt, der jeweils kurz
      aufblinkt, sobald sein Schlag dran ist. Der erste Schlag im Takt ist gelb
-     hervorgehoben, damit die 1 immer sofort erkennbar ist.</p>
+     hervorgehoben, damit die 1 immer sofort erkennbar ist. Darüber steht die
+     Taktart, z. B. „Time 4/4".</p>
 
   <details class="hw" id="nano-usage-de">
     <summary><span>KORG nanoKONTROL2</span><span class="tag">optional</span><span class="chev">▶</span></summary>
@@ -819,12 +820,12 @@
      tile.</p>
 
   <h3 id="quit-en">How do you stop it again?</h3>
-  <p>Easiest: <b>⏻ Server beenden</b> at the top right of the display itself,
+  <p>Easiest: <b>⏻ Quit server</b> at the top right of the display itself,
      after a short confirmation.</p>
   <p>If you just close the browser tab, the app keeps running in the
      background — usually what you want if a tablet is meant to keep the
      page open permanently. To stop it later, just open the app again (that
-     reopens the display) and choose <b>⏻ Server beenden</b> there.</p>
+     reopens the display) and choose <b>⏻ Quit server</b> there.</p>
 
   <h3 id="mappings-en"><span class="stepnum">6</span> The 24 mappings for transport, stop, clear</h3>
   <p class="note ok">💡 Easiest with the <b>🧭 setup wizard</b> — once the app is running, „❓ Help" at the top of the display links to it. It walks through all 24 mappings step by step, instead of working through the table below by hand.</p>
@@ -957,7 +958,7 @@
          IAC Driver can sometimes switch off again. If Stop and Clear from the
          browser then don't react even though IAC is back online: the server
          only reads the device list at its own startup. Switch IAC online
-         <b>first</b>, <b>then</b> restart the server once (⏻ Server beenden,
+         <b>first</b>, <b>then</b> restart the server once (⏻ Quit server,
          then open <code>LooperDisplay.app</code> again) — waiting alone
          isn't enough. The transport bar at the top is unaffected by this;
          it runs over the Live API, not MIDI.</p>
@@ -979,7 +980,7 @@
       — <b>Remote on</b>, <b>Track off</b>.</li>
     <li><code>Cmd + M</code> in Live (map mode). For each looper: click the
       big transport button, briefly tap the ring in the browser — the
-      mapping is created automatically. Same for the STOP and CLEAR corner
+      mapping is created automatically. Same for the STOP and trash-can (🗑) corner
       buttons.</li>
     <li>Leave <code>Cmd + M</code>, <b>save the set</b>.</li>
   </ol>
@@ -1015,7 +1016,7 @@
     <div class="row"><div class="swatch" style="border-color: var(--dim); background: transparent; border-style: dashed;"></div>
       <div><b>Length unknown</b><br><span>outer ring dashed; <b>press and hold</b> the inner circle to cycle the bar count by hand</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--stop); background: var(--stop);"></div>
-      <div><b>Empty</b><br><span>only thin outlines and "LEER" (empty) — even if the looper is formally in Play; below it the record length preset on the looper, e.g. "[4 Takte]" (Live 12)</span></div></div>
+      <div><b>Empty</b><br><span>only thin outlines and "– –" — even if the looper is formally in Play; below it the record length preset on the looper, e.g. "[4 bars]" (Live 12)</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--accent); background: transparent;"></div>
       <div><b>SPD selection</b><br><span>a yellow ring and the "SPD" badge show the looper currently selected on the SPD-SX</span></div></div>
   </div>
@@ -1026,22 +1027,22 @@
     <li><b>Tap the inner circle twice quickly</b><span>stops the looper — Ableton itself treats two quick clicks on the transport button as a "double-click to stop", even when they arrive remotely over MIDI</span></li>
     <li><b>Hold the inner circle (0.6s)</b><span>cycle the bar count by hand (1, 2, 4, 8, 16) when the length is unknown</span></li>
     <li><b>Corner button STOP</b><span>bottom left on the ring — stops at the end of the loop, see below</span></li>
-    <li><b>Corner button CLEAR</b><span>bottom right on the ring — clears the looper</span></li>
+    <li><b>Corner button 🗑 (trash can)</b><span>bottom right on the ring — clears the looper</span></li>
     <li><b>Key F / "Fullscreen" button</b><span>toggle fullscreen</span></li>
     <li><b>Key R</b><span>re-scan the loopers in the set, after a rebuild</span></li>
     <li><b>"📱 Tablet"</b><span>shows the address a tablet or phone on the same Wi-Fi can open the display at</span></li>
-    <li><b>"⏻ Server beenden"</b><span>stops the server, after confirmation — all open tabs and tablets then show "Server wurde beendet"; restart by double-clicking <code>LooperDisplay.app</code> on the computer itself</span></li>
+    <li><b>"⏻ Quit server"</b><span>stops the server, after confirmation — all open tabs and tablets then show "The server was quit from the display"; restart by double-clicking <code>LooperDisplay.app</code> on the computer itself</span></li>
   </ul>
   <p>Live executes the transport button only on the next bar line. Until
-     then, the tapped spot pulses brightly with "WARTET" (waiting) — so it's
+     then, the tapped spot pulses brightly with "WAITING" — so it's
      immediately visible that the tap arrived, even if nothing has happened
      yet.</p>
   <h4>Stop plays the loop to its end</h4>
   <p>Stop doesn't cut off at the next bar line, it lets the loop run to its
      end: a 4-bar loop stopped in bar 1 keeps playing through bar 4. This
      applies to the STOP corner button, the S buttons on the nanoKONTROL2 and
-     the stop pad on the SPD-SX. While it waits, STOP pulses with "WARTET",
-     the ring shows "stoppt am Ende", and S blinks fast on the nanoKONTROL2.</p>
+     the stop pad on the SPD-SX. While it waits, STOP pulses with "WAITING",
+     the ring shows "waiting", and S blinks fast on the nanoKONTROL2.</p>
   <ul class="keys">
     <li><b>Press stop twice</b><span>stops at the next bar line after all — for when it has to be quicker</span></li>
     <li><b>"stop all loopers" on the SPD-SX</b><span>all stop together when the longest running loop ends</span></li>
@@ -1067,10 +1068,11 @@
      the Live API, without needing any setup.</p>
 
   <h3 id="metronome-en">The metronome</h3>
-  <p>Between the transport buttons and tempo/time signature, a row of bars
-     shows the metronome — one bar per beat in the current bar, each
-     flashing briefly as its beat comes up. The first beat of the bar is
-     highlighted in yellow, so beat one is always easy to spot.</p>
+  <p>Next to the transport buttons, at the same height, a row of bars shows
+     the metronome — one bar per beat in the current bar, each flashing
+     briefly as its beat comes up. The first beat of the bar is highlighted
+     in yellow, so beat one is always easy to spot. Above it is the time
+     signature, e.g. "Time 4/4".</p>
 
   <details class="hw" id="nano-usage-en">
     <summary><span>KORG nanoKONTROL2</span><span class="tag">optional</span><span class="chev">▶</span></summary>

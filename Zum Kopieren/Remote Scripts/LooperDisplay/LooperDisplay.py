@@ -164,7 +164,8 @@ EMPTY_TIMEOUT_TICKS = 50  # ~5 s
 #   /nano/looper     <n> <spurname> <state> <stop wartet> <laenge in beats>
 #                    <voreingestellte aufnahmelaenge in takten, 0 = frei>
 #                                                        pro Looper, bei Aenderung, alle 2 s
-#   /nano/song       <songzeit> <tempo> <laeuft> <zaehler> <aufnahme> <loop>  jeder Tick (~100 ms)
+#   /nano/song       <songzeit> <tempo> <laeuft> <zaehler> <aufnahme> <loop> <nenner>
+#                                                        jeder Tick (~100 ms)
 # n ist 1-basiert in der Reihenfolge von self._loopers (Spurreihenfolge,
 # dieselbe wie bei den Clear-CCs). Laeuft der Server nicht, verpuffen die
 # UDP-Pakete folgenlos.
@@ -943,7 +944,8 @@ class LooperDisplay(ControlSurface):
                                          bool(song.is_playing),
                                          int(song.signature_numerator),
                                          bool(song.record_mode),
-                                         bool(song.loop)))
+                                         bool(song.loop),
+                                         int(song.signature_denominator)))
         except Exception:
             pass
 
