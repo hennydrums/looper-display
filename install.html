@@ -319,23 +319,13 @@
      „<a href="#spd-de">Optional: Roland SPD-SX PRO</a>" weiter unten.</p>
 
   <h3 id="schritt-4-de"><span class="stepnum">4</span> App starten</h3>
-  <p class="note ok">💡 Am zuverlässigsten: direkt nach dem Entpacken einmalig
-     <b>Terminal</b> öffnen, <code>xattr -dr com.apple.quarantine </code>
-     (mit Leerzeichen am Ende) eintippen, den entpackten Ordner aus dem
-     Finder ins Terminal-Fenster ziehen — das trägt den Pfad automatisch
-     ein — und Enter drücken. Das entfernt die Sicherheitssperre dauerhaft
-     für den kompletten Ordner auf einen Schlag, inklusive der Start-Datei
-     selbst. Ohne diesen Schritt kann die Warnung unten bei jedem Start neu
-     auftauchen, weil macOS ad-hoc-signierte Skripte nicht immer dauerhaft
-     „merkt".</p>
-  <p>Danach im <b>Finder</b> zu diesem Ordner wechseln und dort doppelklicken auf
+  <p>Im <b>Finder</b> zu diesem Ordner wechseln und dort doppelklicken auf
      <code>Looper-Display starten.command</code>.</p>
   <ol class="steps">
-    <li>Ohne den Terminal-Befehl oben blockiert macOS das beim ersten Start
-      mit einer Meldung, dass der Entwickler nicht verifiziert werden kann
-      oder dass Apple nicht prüfen kann, ob die App Schadsoftware enthält.
-      Das ist normal bei selbst gebauten Programmen ohne teures
-      Apple-Zertifikat.</li>
+    <li>Beim allerersten Mal blockiert macOS das mit einer Meldung, dass der
+      Entwickler nicht verifiziert werden kann oder dass Apple nicht prüfen
+      kann, ob die App Schadsoftware enthält. Das ist normal bei selbst
+      gebauten Programmen ohne teures Apple-Zertifikat.</li>
     <li>Im Finder mit <b>Rechtsklick</b> auf die Datei → <b>„Öffnen"</b> →
       im Dialog noch einmal <b>„Öffnen"</b> bestätigen.</li>
     <li>Bleibt dabei kein „Öffnen"-Knopf sichtbar (nur „Verschieben in den
@@ -344,6 +334,8 @@
       Hinweis zur blockierten App mit einem Button <b>„Trotzdem öffnen"</b>.
       Anklicken, Passwort bzw. Touch ID bestätigen, im nächsten Dialog noch
       einmal <b>„Öffnen"</b>.</li>
+    <li>Das genügt einmalig — die App räumt die Sicherheitsmarkierung danach
+      selbst dauerhaft weg, ein späterer Doppelklick fragt nicht wieder.</li>
     <li>Kurz erscheint ein Terminal-Fenster, minimiert sich dann von selbst,
       und ein Browser-Tab mit der Anzeige öffnet automatisch.</li>
   </ol>
@@ -791,21 +783,13 @@
      "<a href="#spd-en">Optional: Roland SPD-SX PRO</a>" further down.</p>
 
   <h3 id="step-4-en"><span class="stepnum">4</span> Start the app</h3>
-  <p class="note ok">💡 Most reliable: right after unzipping, open <b>Terminal</b>
-     once, type <code>xattr -dr com.apple.quarantine </code> (with a
-     trailing space), drag the unzipped folder from Finder into the
-     Terminal window — that fills in the path automatically — and press
-     Enter. This removes the security block for the whole folder in one
-     go, including the launcher file itself. Without this step, the
-     warning below can reappear on every launch, because macOS doesn't
-     always "remember" ad-hoc-signed scripts permanently.</p>
-  <p>Then, in <b>Finder</b>, go to this folder and double-click
+  <p>In <b>Finder</b>, go to this folder and double-click
      <code>Looper-Display starten.command</code> there.</p>
   <ol class="steps">
-    <li>Without the terminal command above, macOS will block it on first
-      launch with a message that the developer cannot be verified, or that
-      Apple cannot check the app for malicious software. That's normal for
-      self-built programs without an expensive Apple certificate.</li>
+    <li>The very first time, macOS will block it with a message that the
+      developer cannot be verified, or that Apple cannot check the app for
+      malicious software. That's normal for self-built programs without an
+      expensive Apple certificate.</li>
     <li>In Finder, <b>right-click</b> the file → <b>"Open"</b> → confirm
       <b>"Open"</b> again in the dialog.</li>
     <li>If no "Open" button shows up there (only "Move to Trash" /
@@ -814,6 +798,8 @@
       with an <b>"Open Anyway"</b> button. Click it, confirm with your
       password or Touch ID, then click <b>"Open"</b> once more in the next
       dialog.</li>
+    <li>That's needed only once — the app then permanently clears the
+      security flag itself, so a later double-click won't ask again.</li>
     <li>A terminal window briefly appears, then minimizes itself, and a
       browser tab with the display opens automatically.</li>
   </ol>

@@ -1,5 +1,6 @@
 #!/bin/zsh
 # Beendet ein laufendes Looper-Display, auch wenn das Startfenster schon zu ist.
+xattr -d com.apple.quarantine "$0" 2>/dev/null
 PORT=${HTTP_PORT:-8080}
 PID=$(lsof -ti TCP:$PORT -sTCP:LISTEN 2>/dev/null)
 if [ -z "$PID" ]; then
