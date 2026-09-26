@@ -23,7 +23,7 @@ Aufnahmelänge. Unter Live 11 läuft alles andere wie gewohnt.
 ```
 LooperDisplay.app                     Doppelklick startet sie
 Anleitung - Guide.html                die Anleitung als Webseite
-LooperDisplay.als                     Beispielprojekt mit acht Loopern
+LooperTemplateV1.6.als                Vorlage mit acht Loopern (Live 12)
 
 Zum Kopieren/                         einmalig an den Zielort kopieren
 ├── Remote Scripts/
@@ -76,6 +76,10 @@ erneuter Doppelklick auf die App öffnet die Anzeige wieder.
   Setup.
 
 ## Bedienung einzelner Looper aus dem Browser (optional, mit Einrichtung)
+
+> **Mit Live 12 entfällt dieser Abschnitt:** Das Script bedient die Looper
+> selbst — Ring antippen, STOP und 🗑 funktionieren ohne IAC-Treiber und ohne
+> Zuweisungen. Die Einrichtung unten gilt nur für Live 11.
 
 Jeder Ring lässt sich antippen (Transportknopf), dazu gibt es zwei Tasten
 für Stop und Clear. Das braucht — anders als die vier Transporttasten oben —

@@ -9,12 +9,13 @@ beide duerfen gleichzeitig laufen, sie arbeiten auf denselben Loopern.
 
 Bedienung:
 
-    linke Spalte oben    Clear  (ueber die IAC-Schleife, siehe unten)
+    linke Spalte oben    Clear  (Live 12: ueber das LooperDisplay-Script,
+                         sonst ueber die IAC-Schleife, siehe unten)
     linke Spalte Mitte   Stop -- spielt den Loop zu Ende (STOP_AT_LOOP_END),
                          zweiter Druck: naechster Taktstrich
-    linke Spalte unten   Start / Record / Overdub -- druckt ueber die
-                         IAC-Schleife den Transportknopf des Loopers, damit
-                         dessen eigene Quantisierung greift
+    linke Spalte unten   Start / Record / Overdub -- Live 12: ueber das
+                         LooperDisplay-Script, sonst ueber die IAC-Schleife
+                         auf den Transportknopf des Loopers
 
     Mitte links          vorheriger Looper
     Mitte unten          naechster Looper
@@ -27,8 +28,8 @@ Die drei linken Pads wirken immer auf den GERADE GEWAEHLTEN Looper. Welcher
 das ist, meldet das Script per OSC an AbleSet; dort blendet ein Canvas-Label
 die passende Markierung ein.
 
-Clear laeuft ueber einen Umweg: Der Button ist ueber die Live-API nicht
-erreichbar, nur ueber Lives eigenes MIDI-Mapping -- und das ist statisch,
+Ohne Live 12 laeuft Clear ueber einen Umweg: Der Button ist ueber die Live-API
+dann nicht erreichbar, nur ueber Lives eigenes MIDI-Mapping -- und das ist statisch,
 folgt der Durchschaltung also nicht. Deshalb sendet das Script pro Looper
 einen eigenen CC in den IAC-Treiber, der in Live als Fernsteuerungs-Eingang
 wieder ankommt und dort den gemappten Clear-Button ausloest.
@@ -128,6 +129,10 @@ STOP_CC_BASE = 32         # Looper 1 -> CC 32, wie S1 am nanoKONTROL2
 # IAC-Schleife, also am naechsten Taktstrich.
 STOP_AT_LOOP_END = hasattr(Live, 'LooperDevice')
 STOP_TARGET = ('127.0.0.1', 11005)   # EMPTY_PORT des LooperDisplay-Scripts
+# Ebenso Transport und Clear: Mit Live 12 bedient das LooperDisplay-Script den
+# Looper direkt (/looper/<n>/transport, /looper/<n>/clear) -- keine
+# MIDI-Zuweisungen, kein IAC-Bus noetig. Ohne Live 12 wie bisher ueber IAC.
+LOOPER_API = STOP_AT_LOOP_END
 
 STATE_STOP = 0
 STATE_RECORD = 1
@@ -278,16 +283,20 @@ class SpdSxProLooper(ControlSurface):
 
     def _send_stop_request(self, which):
         """Stop-Wunsch an das LooperDisplay-Script: Looper-Nummer oder 'all'."""
+        self._send_looper_request(which, 'stop')
+
+    def _send_looper_request(self, which, command):
+        """Befehl an das LooperDisplay-Script: /looper/<n|all>/<stop|transport|clear>."""
         if self._socket is None:
             return
         try:
-            data = osc_message('/looper/%s/stop' % which, 1, True)
+            data = osc_message('/looper/%s/%s' % (which, command), 1, True)
             self._socket.sendto(data, STOP_TARGET)
         except Exception as error:
-            self.log_message('Stop-Wunsch nicht gesendet: %r' % (error,))
+            self.log_message('%s nicht gesendet: %r' % (command, error))
             return
         if DEBUG:
-            self.log_message('Stop-Wunsch: Looper %s' % which)
+            self.log_message('%s: Looper %s' % (command, which))
 
     def _start_all(self):
         """Mitte oben: alle Looper starten -- sofort, ueber den State-Parameter.
@@ -363,7 +372,11 @@ class SpdSxProLooper(ControlSurface):
         nur so greift die Quantisierung des Loopers. Der Knopf schaltet dann
         von selbst weiter: Record -> Play -> Overdub -> Play -> ...
         """
-        self._send_looper_cc(TRANSPORT_CC_BASE, 'Transport')
+        if LOOPER_API:
+            if self._loopers:
+                self._send_looper_request(str(self._selected + 1), 'transport')
+        else:
+            self._send_looper_cc(TRANSPORT_CC_BASE, 'Transport')
 
     def _send_transport_release(self, cc):
         self._send_midi((0xB0 | TRANSPORT_CHANNEL, cc, 0))
@@ -371,6 +384,9 @@ class SpdSxProLooper(ControlSurface):
     def _on_clear(self):
         """Oberes Pad: CC fuer den gewaehlten Looper in die IAC-Schleife."""
         if not CLEAR_ENABLED or not self._loopers:
+            return
+        if LOOPER_API:
+            self._send_looper_request(str(self._selected + 1), 'clear')
             return
         cc = CLEAR_CC_BASE + self._selected
         if cc > 127:

@@ -269,6 +269,12 @@ in 8er-Bänken auf die Streifen gelegt.
 
 ## 4. Transport und Clear einmalig mappen
 
+> **Nur für Live 11.** Mit Live 12 bedient das Script R, M und S selbst über
+> die Looper-API (`record()`, `play()`, `overdub()`, `stop()`, `clear()`) —
+> keine Zuweisungen, kein IAC-Treiber. Vorhandene Zuweisungen für R und M
+> schaden nicht; eine Stop-Zuweisung bitte löschen (siehe unten). Die
+> Rec-Taste löscht mit Live 12 bei zweimaligem Druck **alle** Looper.
+
 R und M laufen über Lives eigenes MIDI-Mapping — weil nur so die
 Quantisierung des Loopers greift:
 

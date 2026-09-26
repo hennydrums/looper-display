@@ -9,12 +9,11 @@ eins angeschlossen, lassen sich die Looper zusaetzlich darueber bedienen.
 
 Bedienung pro Kanalstreifen 1-8 (bezogen auf die aktuelle 8er-Bank):
 
-    R  (CC 64-71)  Record / Weiterschalten -- NICHT geforwardet, sondern
-                   in Live auf den Transportknopf des Loopers gemappt, damit
-                   dessen eigene Quantisierung greift (siehe README)
+    R  (CC 64-71)  Record / Weiterschalten -- Live 12: vom Script ueber die
+                   Looper-API; sonst in Live auf den Transportknopf gemappt
     S  (CC 32-39)  Stop -- spielt den Loop zu Ende (siehe STOP_AT_LOOP_END);
                    ein zweiter Druck stoppt schon am naechsten Taktstrich
-    M  (CC 48-55)  Loeschen (Clear) -- ebenfalls ueber Lives Mapping
+    M  (CC 48-55)  Loeschen (Clear) -- Live 12: vom Script, sonst Mapping
 
 
     Marker SET (CC 60)  Spur des zuletzt bedienten Loopers auswaehlen
@@ -27,7 +26,7 @@ Bedienung pro Kanalstreifen 1-8 (bezogen auf die aktuelle 8er-Bank):
 
     Play  (CC 41)  ALLE Looper starten  -- sofort, unquantisiert
     Stop  (CC 42)  ALLE Looper stoppen  -- sofort, unquantisiert
-    Rec   (CC 45)  derzeit ohne Funktion
+    Rec   (CC 45)  Live 12: zweimal schnell = ALLE Looper loeschen
 
     Lives Transport wird vom Pult nicht mehr bedient; das liegt am SPD.
 
@@ -106,14 +105,12 @@ MARKER_ONLY_LOOPER_TRACKS = True
 
 CC_PLAY = 41              # ALLE Looper starten  -- sofort, unquantisiert
 CC_STOP = 42              # ALLE Looper stoppen  -- sofort, unquantisiert
-CC_RECORD = 45            # derzeit ohne Funktion, LED bleibt aus.
-                          # Gemessen: Live laesst pro MIDI-Nachricht nur EIN
-                          # Ziel zu -- "alle Looper loeschen" ist vom Pult aus
-                          # deshalb nicht moeglich, weil Clear nur ueber Lives
-                          # Mapping erreichbar ist und dessen Ausgang hier fuer
-                          # die LEDs belegt ist.
+CC_RECORD = 45            # Live 12: zweimal schnell = ALLE Looper loeschen
+                          # (clear() der Live-12-API). Vorher ohne Funktion:
+                          # Clear war nur ueber Lives Mapping erreichbar, und
+                          # Live laesst pro MIDI-Nachricht nur EIN Ziel zu.
 
-# CC_RECORD fehlt hier absichtlich: es gehoert Lives Mapping.
+# CC_RECORD fehlt hier: build_midi_map() forwardet ihn nur mit Live-12-API.
 TRANSPORT_CCS = (CC_PLAY, CC_STOP)
 
 LED_ON = 127
@@ -124,6 +121,7 @@ STATE_STOP = 0
 STATE_RECORD = 1
 STATE_PLAY = 2
 STATE_OVERDUB = 3
+STATE_NAMES_SHORT = ('stop', 'rec', 'play', 'odub')
 
 # Weiterschalt-Logik der R-Taste
 
@@ -163,6 +161,7 @@ EMPTY_TIMEOUT_TICKS = 50  # ~5 s
 #   /nano/count      <anzahl>                            bei Aenderung, alle 2 s
 #   /nano/looper     <n> <spurname> <state> <stop wartet> <laenge in beats>
 #                    <voreingestellte aufnahmelaenge in takten, 0 = frei>
+#                    <1 = Live-12-API: laenge ist verbindlich, 0 heisst leer>
 #                                                        pro Looper, bei Aenderung, alle 2 s
 #   /nano/song       <songzeit> <tempo> <laeuft> <zaehler> <aufnahme> <loop> <nenner>
 #                                                        jeder Tick (~100 ms)
@@ -193,6 +192,21 @@ STOP_AT_LOOP_END = True
 STOP_API = hasattr(Live, 'LooperDevice')
 STOP_VIA_SCRIPT = STOP_AT_LOOP_END and STOP_API
 
+# --- Transport und Clear direkt am Looper (Live 12) --------------------
+# Live 12 laesst Scripts den Looper selbst bedienen. Gemessen: record(),
+# play() aus Stop und stop() warten auf den Takt wie ein Mausklick,
+# overdub() und play() aus Overdub schalten sofort, clear() loescht sofort
+# und setzt loop_length auf 0 -- ein leerer Looper hat immer loop_length 0.
+# Damit braucht es unter Live 12 keine MIDI-Zuweisungen und keinen IAC-Bus:
+# R, M und die Befehle von SPD-Script und Browser (/looper/<n>/transport,
+# /looper/<n>/clear) bedient das Script selbst. Achtung: record() auf einem
+# GEFUELLTEN Looper ueberschreibt ihn -- press_transport ruft es deshalb nur
+# bei loop_length 0 auf.
+# Vorhandene Zuweisungen fuer R und M schaden nicht: Sie haben Vorrang und
+# druecken dieselben Knoepfe am Looper.
+LOOPER_API = STOP_API
+CLEAR_ALL_TICKS = 5       # Rec zweimal innerhalb ~0,5 s: ALLE Looper loeschen
+
 
 class LooperSlot(object):
     """Ein gefundenes Looper-Device samt seines State-Parameters."""
@@ -218,6 +232,57 @@ class LooperSlot(object):
         for name in ('seen_state', 'rec_start', 'loop_start', 'loop_bars',
                      'stop_at', 'stop_sent'):
             setattr(self, name, getattr(old, name))
+
+    def is_empty(self):
+        """True/False laut Live 12 (loop_length 0 = leer), None ohne API."""
+        try:
+            return float(self.device.loop_length) <= 0
+        except (AttributeError, RuntimeError, TypeError, ValueError):
+            return None
+
+    def press_transport(self):
+        """Der grosse Transportknopf, nachgebaut mit den Live-12-Funktionen."""
+        device, state, empty = self.device, self.get_state(), self.is_empty()
+        if empty is None:
+            return False
+        try:
+            if state == STATE_STOP:
+                device.record() if empty else device.play()
+            elif state == STATE_RECORD:
+                # Beendet die Aufnahme am naechsten Taktstrich
+                device.overdub() if device.overdub_after_record else device.play()
+            elif state == STATE_PLAY:
+                # Leer, aber "spielend" (nach einem Sammelstart): wie der Knopf -> Aufnahme
+                device.record() if empty else device.overdub()
+            else:
+                device.play()
+        except RuntimeError:
+            return False
+        return True
+
+    def press_clear(self):
+        try:
+            self.device.clear()
+            return True
+        except (AttributeError, RuntimeError):
+            return False
+
+    def set_record_bars(self, bars):
+        """Aufnahmelaenge am Looper waehlen: Taktzahl, 0 = frei ("x bars")."""
+        try:
+            labels = list(self.device.record_length_list)
+        except (AttributeError, RuntimeError):
+            return False
+        for index, label in enumerate(labels):
+            free = 'x' in str(label)
+            match = re.search(r'\d+', str(label))
+            if (bars == 0 and free) or (bars and not free and match and int(match.group()) == bars):
+                try:
+                    self.device.record_length_index = index
+                    return True
+                except RuntimeError:
+                    return False
+        return False
 
     def current_bars(self, beats_per_bar):
         """Loop-Laenge in Takten. Bevorzugt Lives eigene Angabe (Live 12,
@@ -369,6 +434,9 @@ class LooperDisplay(ControlSurface):
         self._rescan_scheduled = False
         self._empty = {}                 # Looper-Nummer (1-basiert) -> True/False
         self._empty_tick = -EMPTY_TIMEOUT_TICKS   # Tick der letzten Nachricht
+        self._clear_all_armed = -100     # Tick des ersten Rec-Drucks (alle loeschen)
+        self._probe_until = -1           # Messzugang: bis zu diesem Tick Aenderungen protokollieren
+        self._probe_seen = None
         self._empty_socket = None
         self._feed_socket = None
         # Fortlaufender Taktzaehler: zaehlt jeden Taktwechsel der Songposition
@@ -437,12 +505,17 @@ class LooperDisplay(ControlSurface):
             forwarded.append(CC_FADER_BASE + index)
             if STOP_VIA_SCRIPT:
                 forwarded.append(CC_SOLO_BASE + index)
+            if LOOPER_API:
+                forwarded.append(CC_REC_BASE + index)
+                forwarded.append(CC_MUTE_BASE + index)
         forwarded.extend(BANK_DOWN_CCS)
         forwarded.extend(BANK_UP_CCS)
         forwarded.append(CC_MARKER_SET)
         forwarded.append(CC_MARKER_LEFT)
         forwarded.append(CC_MARKER_RIGHT)
         forwarded.extend(TRANSPORT_CCS)
+        if LOOPER_API:
+            forwarded.append(CC_RECORD)
         for cc in forwarded:
             Live.MidiMap.forward_midi_cc(script_handle, midi_map_handle,
                                          MIDI_CHANNEL, cc)
@@ -475,6 +548,16 @@ class LooperDisplay(ControlSurface):
             slot = self._slot_for_index(cc - CC_SOLO_BASE)
             if slot is not None:
                 self._request_stop([slot])
+        elif CC_REC_BASE <= cc < CC_REC_BASE + NUM_STRIPS:
+            slot = self._slot_for_index(cc - CC_REC_BASE)
+            if slot is not None:
+                slot.press_transport()
+        elif CC_MUTE_BASE <= cc < CC_MUTE_BASE + NUM_STRIPS:
+            slot = self._slot_for_index(cc - CC_MUTE_BASE)
+            if slot is not None:
+                slot.press_clear()
+        elif cc == CC_RECORD:
+            self._on_clear_all_press()
         elif cc == CC_PLAY:
             self._set_all_loopers(STATE_PLAY, 'gestartet')
         elif cc == CC_STOP:
@@ -491,6 +574,18 @@ class LooperDisplay(ControlSurface):
             self._select_last_touched()
         elif DEBUG:
             self.log_message('CC %d wird nicht ausgewertet' % cc)
+
+    def _on_clear_all_press(self):
+        """Rec-Taste: zweimal schnell druecken loescht ALLE Looper (Live 12).
+        Einmal allein tut nichts -- ein versehentlicher Druck auf der Buehne
+        soll nicht das ganze Set leeren."""
+        if self._blink_tick - self._clear_all_armed <= CLEAR_ALL_TICKS:
+            self._clear_all_armed = -100
+            count = sum(1 for slot in self._loopers if slot.is_valid and slot.press_clear())
+            self.show_message('Alle Looper geloescht (%d)' % count)
+        else:
+            self._clear_all_armed = self._blink_tick
+            self.show_message('Rec noch einmal druecken: ALLE Looper loeschen')
 
     def _set_all_loopers(self, target, was):
         """Play- und Stop-Taste: alle Looper auf einmal schalten.
@@ -713,6 +808,7 @@ class LooperDisplay(ControlSurface):
         self._last_states = states
 
     def _on_state_changed(self):
+        self._probe_log('State')
         self._note_last_touched()
         self._track_loops()
         self._feed_loopers()
@@ -814,6 +910,25 @@ class LooperDisplay(ControlSurface):
         if 1 <= number <= len(valid):
             self._request_stop([valid[number - 1]])
 
+    def _looper_command(self, which, command, args):
+        """Transport, Clear oder Aufnahmelaenge per OSC (Browser, SPD-SX)."""
+        valid = [slot for slot in self._loopers if slot.is_valid]
+        try:
+            slot = valid[int(which) - 1]
+        except (ValueError, IndexError):
+            return
+        if command == 'reclen':
+            if args:
+                slot.set_record_bars(int(args[0]))
+                self._feed_loopers()
+            return
+        if args and args[0] == 0:                  # 0 = Taste losgelassen
+            return
+        if command == 'transport':
+            slot.press_transport()
+        elif command == 'clear':
+            slot.press_clear()
+
     def _request_stop(self, slots, together=False):
         """Stop fuer einen oder mehrere Looper: am Ende des Loops, bei
         together gemeinsam am Ende des laengsten. Wartet schon einer, stoppt
@@ -895,6 +1010,7 @@ class LooperDisplay(ControlSurface):
             self._led_cache = {}
         self._poll_empty()
         self._service_stops()
+        self._probe_log('Tick')
         self._update_leds()
         self._feed_song()
         if self._blink_tick % FEED_FULL_TICKS == 0:
@@ -928,10 +1044,10 @@ class LooperDisplay(ControlSurface):
             try:
                 length = float(slot.device.loop_length)
             except (AttributeError, RuntimeError, TypeError, ValueError):
-                length = 0.0
+                length = -1.0                      # ohne Live-12-API: unbekannt
             self._feed_send(_osc_message('/nano/looper', number, name, state,
                                          1 if slot.stop_armed else 0, length,
-                                         slot.record_bars()))
+                                         slot.record_bars(), 1 if LOOPER_API else 0))
 
     def _feed_song(self):
         if self._feed_socket is None:
@@ -965,10 +1081,16 @@ class LooperDisplay(ControlSurface):
             if address.startswith('/transport/'):
                 self._transport_command(address[len('/transport/'):])
                 continue
+            if address == '/probe' and len(args) >= 2:
+                self._probe(args[0], args[1], args[2:])
+                continue
             parts = address.split('/')
             if len(parts) == 4 and parts[1] == 'looper' and parts[3] == 'stop':
                 if not (args and args[0] == 0):     # 0 = Taste losgelassen
                     self._stop_command(parts[2])
+                continue
+            if len(parts) == 4 and parts[1] == 'looper' and parts[3] in ('transport', 'clear', 'reclen'):
+                self._looper_command(parts[2], parts[3], args)
                 continue
             empty = _parse_osc_empty(data)
             if empty is None:
@@ -999,8 +1121,62 @@ class LooperDisplay(ControlSurface):
         except Exception as error:
             self.log_message('Display: Transport %s fehlgeschlagen: %r' % (command, error))
 
+    # ------------------------------------------------------------------
+    # Messzugang (Entwicklung): /probe <n> <methode|set:attr> [wert] auf
+    # EMPTY_PORT ruft eine Funktion des Loopers n auf und protokolliert
+    # danach 30 s lang jede Aenderung von State, loop_length und Songzeit.
+    # ------------------------------------------------------------------
+    def _probe(self, number, what, rest):
+        valid = [slot for slot in self._loopers if slot.is_valid]
+        try:
+            slot = valid[int(number) - 1]
+        except (ValueError, IndexError):
+            self.log_message('PROBE: Looper %r gibt es nicht' % (number,))
+            return
+        device = slot.device
+        before = self._probe_snapshot()
+        try:
+            what = str(what)
+            if what.startswith('set:'):
+                setattr(device, what[4:], rest[0])
+                result = 'gesetzt'
+            elif what.startswith('get:'):
+                result = getattr(device, what[4:])
+            else:
+                result = getattr(device, what)()
+        except Exception as error:
+            result = 'FEHLER %r' % (error,)
+        self.log_message('PROBE %s auf Looper %s -> %r | vorher %s'
+                         % (what, number, result, before))
+        self._probe_until = self._blink_tick + 300
+        self._probe_seen = self._probe_snapshot()
+
+    def _probe_snapshot(self):
+        song = self.song()
+        parts = ['t=%.3f' % song.current_song_time]
+        for number, slot in enumerate([s for s in self._loopers if s.is_valid], 1):
+            try:
+                parts.append('%d:%s/%.2f' % (number, STATE_NAMES_SHORT[slot.get_state()],
+                                             float(slot.device.loop_length)))
+            except Exception:
+                parts.append('%d:?' % number)
+        return ' '.join(parts)
+
+    def _probe_log(self, why):
+        if self._blink_tick > self._probe_until:
+            return
+        snapshot = self._probe_snapshot()
+        # Nur loggen, wenn sich ausser der Songzeit etwas geaendert hat
+        if self._probe_seen is None or snapshot.split(' ', 1)[1:] != self._probe_seen.split(' ', 1)[1:]:
+            self.log_message('PROBE %s: %s' % (why, snapshot))
+            self._probe_seen = snapshot
+
     def _is_empty(self, slot):
-        """True nur, wenn der Server den Looper ausdruecklich als leer meldet."""
+        """Live 12: loop_length 0. Sonst nur, wenn der Server den Looper
+        ausdruecklich als leer meldet."""
+        empty = slot.is_empty() if LOOPER_API else None
+        if empty is not None:
+            return empty
         try:
             number = self._loopers.index(slot) + 1
         except ValueError:
@@ -1039,11 +1215,12 @@ class LooperDisplay(ControlSurface):
                     rec_led = mute_led = solo_led = blink
                 elif state == STATE_PLAY:
                     solo_led = LED_ON if self._blink(BLINK_SLOW) else LED_OFF
-                if state in (STATE_PLAY, STATE_OVERDUB) and slot.stop_armed:
-                    solo_led = LED_ON if self._blink(BLINK_FAST) else LED_OFF
                 else:
                     rec_led = LED_ON
                     mute_led = LED_OFF if self._is_empty(slot) else LED_ON
+                # Stop wartet aufs Loop-Ende: S blinkt schnell, R und M wie im Zustand
+                if state in (STATE_PLAY, STATE_OVERDUB) and slot.stop_armed:
+                    solo_led = LED_ON if self._blink(BLINK_FAST) else LED_OFF
             self._send_led(CC_REC_BASE + index, rec_led)
             self._send_led(CC_MUTE_BASE + index, mute_led)
             self._send_led(CC_SOLO_BASE + index, solo_led)
