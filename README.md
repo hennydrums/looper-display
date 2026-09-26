@@ -92,7 +92,9 @@ MIDI-Zuweisung in Live, wie du sie auch mit jedem Controller machen würdest.
 3. `Cmd+M` in Live (Map-Modus). Für jeden Looper:
    - großen Transportknopf anklicken, kurz im Browser auf den Ring tippen
      → Zuweisung entsteht automatisch.
-   - Stop-Knopf des Loopers anklicken, im Browser die STOP-Ecke tippen.
+   - Den Stop-Knopf **nicht** mappen (ab Live 12): STOP läuft übers Script und
+     spielt den Loop zu Ende; eine Stop-Zuweisung hätte Vorrang und stoppt am
+     nächsten Takt.
    - Clear-Button des Loopers anklicken, im Browser die Mülleimer-Ecke (🗑) tippen.
 4. `Cmd+M` verlassen, **Set speichern**.
 

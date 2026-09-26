@@ -267,18 +267,24 @@ in 8er-Bänken auf die Streifen gelegt.
 
 ---
 
-## 4. Transport, Stop und Clear einmalig mappen
+## 4. Transport und Clear einmalig mappen
 
-Alle drei Tastenreihen laufen über Lives eigenes MIDI-Mapping — weil nur so
-die Quantisierung des Loopers greift:
+R und M laufen über Lives eigenes MIDI-Mapping — weil nur so die
+Quantisierung des Loopers greift:
 
 | Bedienelement | CC | Ziel im Looper |
 |---|---|---|
 | **R 1–8** | 64–71 | der große **Transportknopf** |
-| **S 1–8** | 32–39 | **Stop** |
+| **S 1–8** | 32–39 | **nicht mappen** (nur unter Live 11: **Stop**) |
 | **M 1–8** | 48–55 | **Clear** |
 
-Das Script forwardet diese CCs **absichtlich nicht**, damit Live sie sieht.
+Das Script forwardet R und M **absichtlich nicht**, damit Live sie sieht.
+
+> **Stop ab Live 12 nicht mappen.** Die S-Tasten wertet das Script selbst aus
+> (Stop am Loop-Ende). Eine eigene Zuweisung in Live hat aber **Vorrang** vor
+> dem Script: Ist der Stop-Knopf auf CC 32–39 gemappt, drückt S ihn direkt,
+> und der Looper stoppt am nächsten Taktstrich. Vorhandene Stop-Zuweisungen
+> im Map-Modus anklicken und mit `Entf` löschen.
 
 ### Warum das nicht über die API läuft
 
@@ -303,11 +309,11 @@ Einmalig, danach im Set gespeichert:
 1. `Cmd + M` (MIDI-Map-Modus).
 2. Den **großen Transportknopf** von Looper 1 anklicken, **R1** drücken →
    `CC 64`.
-3. Den **Stop**-Knopf von Looper 1 anklicken, **S1** drücken → `CC 32`.
-4. Den **Clear**-Button von Looper 1 anklicken, **M1** drücken → `CC 48`.
-5. Für Looper 2 dasselbe mit **R2**, **S2**, **M2** — und so weiter bis
-   Looper 8.
-6. `Cmd + M` verlassen, **Set speichern**.
+3. Den **Clear**-Button von Looper 1 anklicken, **M1** drücken → `CC 48`.
+4. Für Looper 2 dasselbe mit **R2** und **M2** — und so weiter bis Looper 8.
+5. `Cmd + M` verlassen, **Set speichern**.
+
+Nur unter Live 11 zusätzlich den **Stop**-Knopf mit **S1**–**S8** (`CC 32`–`39`) mappen.
 
 Vierundzwanzig Zuweisungen insgesamt. Am besten im Standard-Set ablegen:
 `Einstellungen → File/Folder → Standard-Set speichern`.
