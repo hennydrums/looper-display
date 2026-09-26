@@ -1,10 +1,11 @@
 # Looper Display
 
-> **Schöner zu lesen:** Diesen Ordner auf dein Mac kopieren und
-> [`install.html`](install.html) doppelklicken öffnet dieselbe Anleitung
-> als gestaltete Webseite mit Schritt-für-Schritt-Zahlen, Bedienungsteil
-> und Sprachumschalter (DE/EN) oben rechts. Dieses Dokument hier ist die
-> reine Textversion zum Nachschlagen.
+> **Download:** [`LooperDisplay-….zip` unter Releases](https://github.com/hennydrums/looper-display/releases/latest)
+> — nicht „Source code", dem fehlt die App.
+>
+> **Schöner zu lesen:** die [Anleitung als Webseite](https://hennydrums.github.io/looper-display/install.html)
+> (DE/EN), liegt auch im Zip als `Anleitung - Guide.html`. Dieses Dokument
+> hier ist die reine Textversion zum Nachschlagen.
 
 Zeigt den Zustand aller Looper eines Ableton-Live-Sets als drehende Ringe im
 Browser: auf dem Mac, auf einem zweiten Monitor oder auf jedem Tablet im
@@ -14,23 +15,19 @@ nötig.
 ## Was du bekommst
 
 ```
-Looper-Display starten.command        Doppelklick startet sie
-Looper-Display beenden.command        Doppelklick beendet sie wieder
+LooperDisplay.app                     Doppelklick startet sie
+Anleitung - Guide.html                die Anleitung als Webseite
+LooperDisplay.als                     Beispielprojekt mit acht Loopern
 
 Zum Kopieren/                         einmalig an den Zielort kopieren
 ├── Remote Scripts/
 │   ├── LooperDisplay/                Pflicht: liefert die Daten an die Anzeige
 │   └── SPD_SX_Pro_Looper/            optional: nur mit einem Roland SPD-SX
 └── SPD-SX Pro Preset/                optional: fertiges Kit zum Import auf das SPD-SX
-
-Programm (nicht anfassen)/            die App selbst
-├── looper-display
-└── node_modules/
 ```
 
-Die App selbst ist eine fertige Programmdatei für Apple-Silicon-Macs. Kein
-Node.js, kein `npm install`, kein Terminal-Wissen nötig. Der Ordner
-`Programm (nicht anfassen)` muss dabei so bleiben, wie er ist.
+Die App ist ein fertiges Programm für Apple-Silicon-Macs. Kein Node.js,
+kein `npm install`, kein Terminal nötig.
 
 ## Installation
 
@@ -47,33 +44,21 @@ Node.js, kein `npm install`, kein Terminal-Wissen nötig. Der Ordner
    nanoKONTROL2** im Rig, dort stattdessen Eingang `nanoKONTROL2
    (SLIDER/KNOB)` und Ausgang `nanoKONTROL2 (CTRL)` einstellen, sonst
    bleiben Tasten und LEDs am Gerät ohne Wirkung.
-3. Doppelklick auf `Looper-Display starten.command`. Beim ersten Mal fragt
-   macOS, ob die Datei geöffnet werden darf — Rechtsklick auf die Datei,
-   dann „Öffnen" wählen und bestätigen, das genügt einmalig.
-4. Das Terminalfenster zeigt zwei Adressen:
-
-   ```
-   Anzeige: http://localhost:8080
-            http://192.168.0.XXX:8080  (fuer Tablet/Handy)
-   ```
-
-   Die erste im eigenen Browser öffnen, die zweite auf einem Tablet im
-   selben WLAN. Taste `F` schaltet Vollbild, Fenster einfach offen lassen.
+3. `LooperDisplay.app` in den Ordner „Programme" ziehen und doppelklicken.
+   Beim ersten Mal meldet macOS, dass es die App nicht prüfen kann — mit
+   „Fertig" schließen, dann **Systemeinstellungen → Datenschutz &
+   Sicherheit** ganz nach unten scrollen und **„Trotzdem öffnen"** wählen.
+   Das ist nur einmal nötig.
+4. Die Anzeige öffnet sich automatisch im Browser. Die Adresse fürs Tablet
+   (selbes WLAN) steht in der Anzeige oben rechts unter **📱 Tablet**.
+   Taste `F` schaltet Vollbild.
 
 ## Wie beendest du es wieder?
 
-Solange das Terminalfenster aus Schritt 3 offen ist, läuft die App. Drei
-gleichwertige Wege, sie zu beenden:
-
-- **Ctrl + C** im Terminalfenster drücken, während es im Vordergrund ist.
-- Das **Terminalfenster schließen** — macOS fragt nach, ob der laufende
-  Vorgang beendet werden soll, das bestätigen.
-- Doppelklick auf **`Looper-Display beenden.command`** — findet und beendet
-  die App auch dann, wenn das Terminalfenster schon zu ist.
-
-Nur den Browser-Tab zu schließen beendet die App nicht, sie läuft im
-Hintergrund weiter — meist gewollt, falls ein Tablet die Seite dauerhaft
-offen halten soll.
+**⏻ Server beenden** oben rechts in der Anzeige. Nur den Browser-Tab zu
+schließen beendet die App nicht, sie läuft im Hintergrund weiter — meist
+gewollt, falls ein Tablet die Seite dauerhaft offen halten soll. Ein
+erneuter Doppelklick auf die App öffnet die Anzeige wieder.
 
 ## Was sofort funktioniert
 

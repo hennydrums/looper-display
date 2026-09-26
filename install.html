@@ -257,25 +257,18 @@
   <h2>Installation</h2>
 
   <h3 id="was-du-bekommst-de">Was du bekommst</h3>
-  <div class="filetree"><b>Looper-Display starten.command</b>     Doppelklick startet sie
-<b>Looper-Display beenden.command</b>     Doppelklick beendet sie wieder
+  <div class="filetree"><b>LooperDisplay.app</b>                Doppelklick startet sie — am besten vorher nach „Programme" ziehen
+<b>Anleitung - Guide.html</b>           diese Anleitung
 <b>LooperDisplay.als</b>                Beispielprojekt mit acht fertig eingerichteten Loopern
 
 <b>Zum Kopieren/</b>                    einmalig an den Zielort kopieren, siehe Schritt 2
 ├── Remote Scripts/
 │   ├── <b>LooperDisplay/</b>           Pflicht: liefert die Daten an die Anzeige
 │   └── <b>SPD_SX_Pro_Looper/</b>       optional: nur mit einem Roland SPD-SX
-└── <b>SPD-SX Pro Preset/</b>           optional: fertiges Kit zum Import auf das SPD-SX
-
-<b>Programm (nicht anfassen)/</b>       die App selbst — nichts davon löschen oder verschieben
-├── looper-display
-└── node_modules/</div>
-  <p>Die App selbst ist eine fertige Programmdatei für Apple-Silicon-Macs
+└── <b>SPD-SX Pro Preset/</b>           optional: fertiges Kit zum Import auf das SPD-SX</div>
+  <p>Die App ist ein fertiges Programm für Apple-Silicon-Macs
      (M-Prozessoren). Kein Node.js, kein <code>npm install</code>, kein
-     Terminal-Wissen nötig. Der Ordner <code>Programm (nicht anfassen)</code>
-     muss dabei so bleiben, wie er ist — <code>node_modules</code> darin
-     enthält die MIDI-Anbindung für die Bedienung einzelner Looper aus dem
-     Browser.</p>
+     Terminal nötig.</p>
 
   <h3 id="looper-device-de"><span class="stepnum">1</span> Der Looper in Ableton</h3>
   <p>Looper Display baut auf Abletons eigenem <b>Looper</b>-Gerät auf: Auf einem
@@ -319,38 +312,31 @@
      „<a href="#spd-de">Optional: Roland SPD-SX PRO</a>" weiter unten.</p>
 
   <h3 id="schritt-4-de"><span class="stepnum">4</span> App starten</h3>
-  <p>Im <b>Finder</b> zu diesem Ordner wechseln und dort doppelklicken auf
-     <code>Looper-Display starten.command</code>.</p>
+  <p>Am besten <code>LooperDisplay.app</code> zuerst in den Ordner
+     <b>Programme</b> ziehen und dort doppelklicken.</p>
   <ol class="steps">
-    <li>Beim allerersten Mal blockiert macOS das mit einer Meldung, dass der
-      Entwickler nicht verifiziert werden kann oder dass Apple nicht prüfen
-      kann, ob die App Schadsoftware enthält. Das ist normal bei selbst
-      gebauten Programmen ohne teures Apple-Zertifikat.</li>
-    <li>Im Finder mit <b>Rechtsklick</b> auf die Datei → <b>„Öffnen"</b> →
-      im Dialog noch einmal <b>„Öffnen"</b> bestätigen.</li>
-    <li>Bleibt dabei kein „Öffnen"-Knopf sichtbar (nur „Verschieben in den
-      Papierkorb" / „Abbrechen"): <b>Systemeinstellungen → Datenschutz &amp;
-      Sicherheit</b> öffnen und ganz nach unten scrollen — dort erscheint ein
-      Hinweis zur blockierten App mit einem Button <b>„Trotzdem öffnen"</b>.
-      Anklicken, Passwort bzw. Touch ID bestätigen, im nächsten Dialog noch
-      einmal <b>„Öffnen"</b>.</li>
-    <li>Das genügt einmalig — die App räumt die Sicherheitsmarkierung danach
-      selbst dauerhaft weg, ein späterer Doppelklick fragt nicht wieder.</li>
-    <li>Kurz erscheint ein Terminal-Fenster, minimiert sich dann von selbst,
-      und ein Browser-Tab mit der Anzeige öffnet automatisch.</li>
+    <li>Beim allerersten Mal meldet macOS, dass Apple nicht prüfen kann, ob
+      die App Schadsoftware enthält. Das ist normal bei selbst gebauten
+      Programmen ohne teures Apple-Zertifikat — mit <b>„Fertig"</b>
+      schließen.</li>
+    <li><b>Systemeinstellungen → Datenschutz &amp; Sicherheit</b> öffnen und
+      ganz nach unten scrollen: Dort steht ein Hinweis zu „LooperDisplay" mit
+      dem Button <b>„Trotzdem öffnen"</b>. Anklicken, mit Passwort bzw. Touch ID
+      bestätigen und im nächsten Dialog noch einmal <b>„Trotzdem öffnen"</b>.
+      Auf älteren macOS-Versionen geht auch: Rechtsklick auf die App →
+      „Öffnen".</li>
+    <li>Das ist nur einmal nötig — danach startet die App mit einem normalen
+      Doppelklick.</li>
+    <li>Die Anzeige öffnet sich automatisch im Browser. Ein Programmfenster
+      gibt es nicht, die App läuft still im Hintergrund.</li>
   </ol>
-  <p class="note warn">Beim allerersten Start fragt macOS zusätzlich einmalig,
-     ob „osascript" das Terminal steuern darf — dafür wird das Fenster
-     minimiert und später wieder geschlossen. Bitte erlauben. Ohne diese
-     Erlaubnis läuft die App trotzdem, das Fenster bleibt dann nur offen.</p>
-  <p>Für ein Tablet zusätzlich die zweite, im (minimierten) Terminal-Fenster
-     angezeigte Adresse dort in Safari öffnen:</p>
-  <pre>Anzeige: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
-         <a href="http://192.168.0.XXX:8080" target="_blank">http://192.168.0.XXX:8080</a>  (fuer Tablet/Handy)</pre>
+  <p>Läuft die App schon, öffnet ein weiterer Doppelklick einfach die Anzeige
+     erneut. Die Adresse fürs Tablet steht in der Anzeige oben rechts unter
+     <b>📱 Tablet</b>.</p>
 
   <h3 id="schritt-5-de"><span class="stepnum">5</span> Auf dem Tablet einrichten (optional)</h3>
-  <p>Für eine Anzeige ganz ohne Browser-Oberfläche: die zweite Adresse in
-     Safari öffnen, <b>Teilen-Symbol → „Zum Home-Bildschirm"</b> — nicht
+  <p>Für eine Anzeige ganz ohne Browser-Oberfläche: die Adresse unter
+     <b>📱 Tablet</b> (oben rechts in der Anzeige) in Safari öffnen, <b>Teilen-Symbol → „Zum Home-Bildschirm"</b> — nicht
      „Zu Lesezeichen hinzufügen". Danach startet die Seite über das neue
      Symbol komplett ohne Adressleiste.</p>
   <p class="note warn">📱 Auf iPhone und iPad blendet der Vollbild-Button
@@ -363,14 +349,10 @@
   <h3 id="beenden-de">Wie beendest du es wieder?</h3>
   <p>Am einfachsten: <b>⏻ Server beenden</b> oben rechts in der Anzeige
      selbst, nach kurzer Rückfrage.</p>
-  <p>Zwei weitere, gleichwertige Wege: im <b>Finder</b> doppelklicken auf
-     <code>Looper-Display beenden.command</code> — findet und beendet die
-     App, auch wenn das (minimierte) Terminal-Fenster längst aus den Augen
-     ist, das Fenster schließt sich danach von selbst mit —, oder
-     <b>Ctrl + C</b> im (wieder eingeblendeten) Terminal-Fenster.</p>
-  <p>Schließt du nur den Browser-Tab mit der Anzeige, läuft die App im
-     Hintergrund weiter — das ist meistens gewollt, falls ein Tablet die
-     Seite dauerhaft offen halten soll.</p>
+  <p>Schließt du nur den Browser-Tab, läuft die App im Hintergrund weiter —
+     das ist meistens gewollt, falls ein Tablet die Seite dauerhaft offen
+     halten soll. Zum Beenden später einfach die App erneut öffnen (das
+     öffnet die Anzeige) und dort <b>⏻ Server beenden</b> wählen.</p>
 
   <h3 id="mappings-de"><span class="stepnum">6</span> Die 24 Zuweisungen für Transport, Stop, Clear</h3>
   <p class="note ok">💡 Am einfachsten mit dem <b>🧭 Setup-Assistenten</b> — sobald die App läuft, verlinkt „❓ Help" oben in der Anzeige dorthin. Er führt Schritt für Schritt durch alle 24 Zuweisungen, statt die Tabelle unten von Hand abzuarbeiten.</p>
@@ -499,12 +481,11 @@
         <li><b>Nach dem Kopieren der Scripts</b><span>Live einmal neu starten — Remote Scripts werden nur beim Programmstart eingelesen</span></li>
       </ul>
       <p class="note warn">⚠️ Nach einem Mac-Neustart steht „Gerät ist online" beim
-         IAC-Treiber manchmal wieder aus. Zeigt das Terminal des Servers
-         <code>Befehl: transport Looper X, aber kein MIDI-Ausgang</code>, obwohl
-         IAC online ist: Der Server hat die Geräteliste beim eigenen Start
-         eingelesen, danach wird sie nicht mehr aktualisiert. Erst IAC online
-         schalten, <b>dann</b> den Server einmal neu starten (Ctrl+C, danach
-         <code>Looper-Display starten.command</code> erneut) — warten allein
+         IAC-Treiber manchmal wieder aus. Reagieren Stop und Clear aus dem Browser
+         dann nicht, obwohl IAC wieder online ist: Der Server liest die
+         Geräteliste nur beim eigenen Start ein. Erst IAC online schalten,
+         <b>dann</b> den Server einmal neu starten (⏻ Server beenden, danach
+         <code>LooperDisplay.app</code> erneut öffnen) — warten allein
          reicht nicht. Die Transport-Leiste oben bleibt davon unberührt, die
          läuft über die Live-API, nicht über MIDI.</p>
     </div>
@@ -576,7 +557,8 @@
     <li><b>Ecktaste CLEAR</b><span>unten rechts am Ring — Looper löschen</span></li>
     <li><b>Taste F / Button „Vollbild"</b><span>Vollbild an/aus</span></li>
     <li><b>Taste R</b><span>Looper im Set neu suchen, nach einem Umbau</span></li>
-    <li><b>„⏻ Server beenden"</b><span>beendet den Node-Server, nach Rückfrage — alle offenen Tabs und Tablets zeigen danach „Server wurde beendet"; neu starten geht nur am Rechner selbst, per Terminal oder <code>Looper-Display starten.command</code></span></li>
+    <li><b>„📱 Tablet"</b><span>zeigt die Adresse, unter der Tablet oder Handy im selben WLAN die Anzeige öffnen</span></li>
+    <li><b>„⏻ Server beenden"</b><span>beendet den Server, nach Rückfrage — alle offenen Tabs und Tablets zeigen danach „Server wurde beendet"; neu starten per Doppelklick auf <code>LooperDisplay.app</code> am Rechner selbst</span></li>
   </ul>
   <p>Live führt Stop und den Transportknopf erst am nächsten Taktstrich aus.
      Bis dahin pulsiert die getippte Stelle hell mit „WARTET" — so ist sofort
@@ -723,25 +705,17 @@
   <h2>Installation</h2>
 
   <h3 id="what-you-get-en">What you get</h3>
-  <div class="filetree"><b>Looper-Display starten.command</b>     double-click to start it
-<b>Looper-Display beenden.command</b>     double-click to stop it again
+  <div class="filetree"><b>LooperDisplay.app</b>                double-click to start it — best move it to "Applications" first
+<b>Anleitung - Guide.html</b>           this guide
 <b>LooperDisplay.als</b>                example project with eight set-up loopers
 
 <b>Zum Kopieren/</b>                    copy to its destination once, see step 2
 ├── Remote Scripts/
 │   ├── <b>LooperDisplay/</b>           required: feeds the data to the display
 │   └── <b>SPD_SX_Pro_Looper/</b>       optional: only with a Roland SPD-SX
-└── <b>SPD-SX Pro Preset/</b>           optional: ready-made kit to import onto the SPD-SX
-
-<b>Programm (nicht anfassen)/</b>       the app itself — don't delete or move anything in it
-├── looper-display
-└── node_modules/</div>
-  <p>The app itself is a ready-built program for Apple Silicon Macs
-     (M-series). No Node.js, no <code>npm install</code>, no terminal
-     knowledge needed. The <code>Programm (nicht anfassen)</code> folder
-     must stay exactly as it is — the <code>node_modules</code> inside it
-     holds the MIDI connection used for controlling individual loopers from
-     the browser.</p>
+└── <b>SPD-SX Pro Preset/</b>           optional: ready-made kit to import onto the SPD-SX</div>
+  <p>The app is a ready-built program for Apple Silicon Macs (M-series).
+     No Node.js, no <code>npm install</code>, no terminal needed.</p>
 
   <h3 id="looper-device-en"><span class="stepnum">1</span> The Looper in Ableton</h3>
   <p>Looper Display builds on Ableton's own <b>Looper</b> device: an audio
@@ -783,38 +757,29 @@
      "<a href="#spd-en">Optional: Roland SPD-SX PRO</a>" further down.</p>
 
   <h3 id="step-4-en"><span class="stepnum">4</span> Start the app</h3>
-  <p>In <b>Finder</b>, go to this folder and double-click
-     <code>Looper-Display starten.command</code> there.</p>
+  <p>Best drag <code>LooperDisplay.app</code> into your <b>Applications</b>
+     folder first, then double-click it there.</p>
   <ol class="steps">
-    <li>The very first time, macOS will block it with a message that the
-      developer cannot be verified, or that Apple cannot check the app for
+    <li>The very first time, macOS says Apple cannot check the app for
       malicious software. That's normal for self-built programs without an
-      expensive Apple certificate.</li>
-    <li>In Finder, <b>right-click</b> the file → <b>"Open"</b> → confirm
-      <b>"Open"</b> again in the dialog.</li>
-    <li>If no "Open" button shows up there (only "Move to Trash" /
-      "Cancel"): open <b>System Settings → Privacy &amp; Security</b> and
-      scroll all the way down — a notice about the blocked app appears there
-      with an <b>"Open Anyway"</b> button. Click it, confirm with your
-      password or Touch ID, then click <b>"Open"</b> once more in the next
-      dialog.</li>
-    <li>That's needed only once — the app then permanently clears the
-      security flag itself, so a later double-click won't ask again.</li>
-    <li>A terminal window briefly appears, then minimizes itself, and a
-      browser tab with the display opens automatically.</li>
+      expensive Apple certificate — close it with <b>"Done"</b>.</li>
+    <li>Open <b>System Settings → Privacy &amp; Security</b> and scroll all
+      the way down: there's a notice about "LooperDisplay" with an
+      <b>"Open Anyway"</b> button. Click it, confirm with your password or
+      Touch ID, then click <b>"Open Anyway"</b> once more in the next dialog.
+      On older macOS versions, right-click the app → "Open" works too.</li>
+    <li>That's needed only once — after that, the app starts with a normal
+      double-click.</li>
+    <li>The display opens automatically in your browser. There's no app
+      window; the app runs quietly in the background.</li>
   </ol>
-  <p class="note warn">On the very first start, macOS also asks once whether
-     "osascript" may control the terminal — that's needed to minimize the
-     window and later close it again. Please allow it. Without this
-     permission the app still runs, the window just stays open.</p>
-  <p>For a tablet, also open the second address shown in the (minimized)
-     terminal window, in Safari:</p>
-  <pre>Anzeige: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
-         <a href="http://192.168.0.XXX:8080" target="_blank">http://192.168.0.XXX:8080</a>  (for tablet/phone)</pre>
+  <p>If the app is already running, double-clicking it again just reopens
+     the display. The address for a tablet is at the top right of the
+     display under <b>📱 Tablet</b>.</p>
 
   <h3 id="step-5-en"><span class="stepnum">5</span> Set up on a tablet (optional)</h3>
-  <p>For a display with no browser chrome at all: open the second address in
-     Safari, <b>Share icon → "Add to Home Screen"</b> — not "Add Bookmark".
+  <p>For a display with no browser chrome at all: open the address shown
+     under <b>📱 Tablet</b> (top right of the display) in Safari, <b>Share icon → "Add to Home Screen"</b> — not "Add Bookmark".
      After that, the page launches via the new icon with no address bar at
      all.</p>
   <p class="note warn">📱 On iPhone and iPad, the fullscreen button never
@@ -827,14 +792,10 @@
   <h3 id="quit-en">How do you stop it again?</h3>
   <p>Easiest: <b>⏻ Server beenden</b> at the top right of the display itself,
      after a short confirmation.</p>
-  <p>Two other, equally good ways: double-click
-     <code>Looper-Display beenden.command</code> in <b>Finder</b> — it finds
-     and stops the app even if the (minimized) terminal window is long out
-     of sight, and the window closes itself afterwards —, or <b>Ctrl + C</b>
-     in the (re-shown) terminal window.</p>
-  <p>If you just close the browser tab with the display, the app keeps
-     running in the background — usually what you want if a tablet is meant
-     to keep the page open permanently.</p>
+  <p>If you just close the browser tab, the app keeps running in the
+     background — usually what you want if a tablet is meant to keep the
+     page open permanently. To stop it later, just open the app again (that
+     reopens the display) and choose <b>⏻ Server beenden</b> there.</p>
 
   <h3 id="mappings-en"><span class="stepnum">6</span> The 24 mappings for transport, stop, clear</h3>
   <p class="note ok">💡 Easiest with the <b>🧭 setup wizard</b> — once the app is running, „❓ Help" at the top of the display links to it. It walks through all 24 mappings step by step, instead of working through the table below by hand.</p>
@@ -964,12 +925,11 @@
         <li><b>After copying the scripts</b><span>restart Live once — Remote Scripts are only read in at program start</span></li>
       </ul>
       <p class="note warn">⚠️ After a Mac restart, "Device is online" on the
-         IAC Driver can sometimes switch off again. If the server's terminal
-         shows <code>Befehl: transport Looper X, aber kein MIDI-Ausgang</code>
-         even though IAC is online: the server read the device list once at
-         its own startup and never refreshes it. Switch IAC online <b>first</b>,
-         <b>then</b> restart the server once (Ctrl+C, then
-         <code>Looper-Display starten.command</code> again) — waiting alone
+         IAC Driver can sometimes switch off again. If Stop and Clear from the
+         browser then don't react even though IAC is back online: the server
+         only reads the device list at its own startup. Switch IAC online
+         <b>first</b>, <b>then</b> restart the server once (⏻ Server beenden,
+         then open <code>LooperDisplay.app</code> again) — waiting alone
          isn't enough. The transport bar at the top is unaffected by this;
          it runs over the Live API, not MIDI.</p>
     </div>
@@ -1040,7 +1000,8 @@
     <li><b>Corner button CLEAR</b><span>bottom right on the ring — clears the looper</span></li>
     <li><b>Key F / "Fullscreen" button</b><span>toggle fullscreen</span></li>
     <li><b>Key R</b><span>re-scan the loopers in the set, after a rebuild</span></li>
-    <li><b>"⏻ Server beenden"</b><span>stops the Node server, after confirmation — all open tabs and tablets then show "Server wurde beendet"; restarting only works on the computer itself, via terminal or <code>Looper-Display starten.command</code></span></li>
+    <li><b>"📱 Tablet"</b><span>shows the address a tablet or phone on the same Wi-Fi can open the display at</span></li>
+    <li><b>"⏻ Server beenden"</b><span>stops the server, after confirmation — all open tabs and tablets then show "Server wurde beendet"; restart by double-clicking <code>LooperDisplay.app</code> on the computer itself</span></li>
   </ul>
   <p>Live executes Stop and the transport button only on the next bar line.
      Until then, the tapped spot pulses brightly with "WAITING" — so it's
