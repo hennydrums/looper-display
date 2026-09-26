@@ -10,7 +10,8 @@ beide duerfen gleichzeitig laufen, sie arbeiten auf denselben Loopern.
 Bedienung:
 
     linke Spalte oben    Clear  (ueber die IAC-Schleife, siehe unten)
-    linke Spalte Mitte   Stop -- ebenfalls ueber die IAC-Schleife
+    linke Spalte Mitte   Stop -- spielt den Loop zu Ende (STOP_AT_LOOP_END),
+                         zweiter Druck: naechster Taktstrich
     linke Spalte unten   Start / Record / Overdub -- druckt ueber die
                          IAC-Schleife den Transportknopf des Loopers, damit
                          dessen eigene Quantisierung greift
@@ -19,11 +20,8 @@ Bedienung:
     Mitte unten          naechster Looper
 
     Mitte oben           ALLE Looper starten -- sofort, siehe _start_all
-    Mitte                ALLE Looper stoppen -- quantisiert
-
-    Die Sammelbefehle senden denselben CC fuer jeden Looper nacheinander --
-    ebenfalls ueber Lives Mapping, damit alle gemeinsam am naechsten
-    Taktstrich stoppen statt mitten im Takt abzureissen.
+    Mitte                ALLE Looper stoppen -- gemeinsam am Ende des
+                         laengsten Loops, zweiter Druck: naechster Taktstrich
 
 Die drei linken Pads wirken immer auf den GERADE GEWAEHLTEN Looper. Welcher
 das ist, meldet das Script per OSC an AbleSet; dort blendet ein Canvas-Label
@@ -121,6 +119,15 @@ OSC_AS_INT = True         # Als ZAHL senden. Die Canvas liest den Wert mit
 TRANSPORT_CHANNEL = 0     # 0-basiert, entspricht MIDI-Kanal 1
 TRANSPORT_CC_BASE = 64    # Looper 1 -> CC 64, wie R1 am nanoKONTROL2
 STOP_CC_BASE = 32         # Looper 1 -> CC 32, wie S1 am nanoKONTROL2
+
+# --- Stop am Loop-Ende ------------------------------------------------
+# Die Stop-Pads spielen den Loop zu Ende. Das Mitzaehlen der Takte macht das
+# Script "LooperDisplay"; dieses Script schickt ihm nur den Wunsch per OSC:
+# /looper/<n>/stop bzw. /looper/all/stop (alle gemeinsam am Ende des
+# laengsten Loops). Ohne Live 12 (Live.LooperDevice) wie frueher ueber die
+# IAC-Schleife, also am naechsten Taktstrich.
+STOP_AT_LOOP_END = hasattr(Live, 'LooperDevice')
+STOP_TARGET = ('127.0.0.1', 11005)   # EMPTY_PORT des LooperDisplay-Scripts
 
 STATE_STOP = 0
 STATE_RECORD = 1
@@ -242,7 +249,10 @@ class SpdSxProLooper(ControlSurface):
         elif pad == PAD_CLEAR:
             self._on_clear()
         elif pad == PAD_ALL_STOP:
-            self._on_all(STOP_CC_BASE, 'Stop')
+            if STOP_AT_LOOP_END:
+                self._send_stop_request('all')
+            else:
+                self._on_all(STOP_CC_BASE, 'Stop')
         elif pad == PAD_ALL_START:
             self._start_all()
 
@@ -256,10 +266,28 @@ class SpdSxProLooper(ControlSurface):
     def _on_stop(self):
         """Mittleres linkes Pad: Stop-Knopf des gewaehlten Loopers druecken.
 
-        Wie beim Transportknopf ueber Lives Mapping, damit die Quantisierung
+        Mit Live 12 stoppt er am Loop-Ende (siehe STOP_AT_LOOP_END), sonst
+        wie beim Transportknopf ueber Lives Mapping, damit die Quantisierung
         des Loopers greift -- ein gesetzter State-Parameter stoppt sofort.
         """
-        self._send_looper_cc(STOP_CC_BASE, 'Stop')
+        if STOP_AT_LOOP_END:
+            if self._loopers:
+                self._send_stop_request(str(self._selected + 1))
+        else:
+            self._send_looper_cc(STOP_CC_BASE, 'Stop')
+
+    def _send_stop_request(self, which):
+        """Stop-Wunsch an das LooperDisplay-Script: Looper-Nummer oder 'all'."""
+        if self._socket is None:
+            return
+        try:
+            data = osc_message('/looper/%s/stop' % which, 1, True)
+            self._socket.sendto(data, STOP_TARGET)
+        except Exception as error:
+            self.log_message('Stop-Wunsch nicht gesendet: %r' % (error,))
+            return
+        if DEBUG:
+            self.log_message('Stop-Wunsch: Looper %s' % which)
 
     def _start_all(self):
         """Mitte oben: alle Looper starten -- sofort, ueber den State-Parameter.

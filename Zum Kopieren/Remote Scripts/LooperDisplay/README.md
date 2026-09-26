@@ -99,7 +99,7 @@ Pro Kanalstreifen 1–8 (bezogen auf die aktuelle 8er-Bank):
 | Taste | CC | Funktion |
 |---|---|---|
 | **R** | 64–71 | Record / Weiterschalten — via Live-MIDI-Mapping, siehe Abschnitt 4 |
-| **S** | 32–39 | **Stop** — via Live-MIDI-Mapping, siehe Abschnitt 4 |
+| **S** | 32–39 | **Stop am Loop-Ende** — vom Script, siehe „Stop am Loop-Ende“; zweiter Druck: nächster Takt |
 | **M** | 48–55 | Löschen (Clear) — via Live-MIDI-Mapping, siehe Abschnitt 4 |
 | **Fader** | 0–7 | Lautstärke der Spur, auf der der jeweilige Looper sitzt |
 
@@ -150,7 +150,8 @@ Damit gibt es zwei klar getrennte Werkzeuge:
 
 | | Wirkung | Timing |
 |---|---|---|
-| **R, S 1–8** | einzelner Looper | quantisiert, über Lives Mapping |
+| **R 1–8** | einzelner Looper | quantisiert, über Lives Mapping |
+| **S 1–8** | einzelner Looper | am Ende des Loops, vom Script |
 | **Play, Stop** | alle Looper | sofort, über die API |
 
 Für musikalische Übergänge die Streifentasten, fürs Stückende den
@@ -164,6 +165,30 @@ soll nicht noch ein Takt auslaufen.
 > unmöglich, und selbst senden kann das Script die acht CCs nicht, weil sein
 > Ausgang für die LEDs belegt ist. Zum Löschen bleiben die M-Tasten je
 > Looper — oder ein SPD-Pad, das über die IAC-Schleife senden kann.
+
+### Stop am Loop-Ende
+
+Stop spielt den Loop zu Ende, statt am nächsten Taktstrich abzubrechen: Ein
+4-Takter, gestoppt in Takt 1, läuft bis Takt 4 durch. Das Script zählt dazu
+selbst die Takte mit, misst die Loop-Länge bei der Aufnahme und drückt den
+Stop-Knopf des Loopers (`LooperDevice.stop()`) erst im **letzten Takt** des
+Loops — die Quantisierung des Loopers (1 Takt) lässt ihn dann genau am
+Loop-Ende stoppen. Solange er wartet, blinkt S schnell.
+
+| Auslöser | Wirkung |
+|---|---|
+| S-Taste | dieser Looper stoppt am Ende seines Loops |
+| S-Taste, zweiter Druck | stoppt doch schon am nächsten Taktstrich |
+| OSC `/looper/<n>/stop` auf Port 11005 | wie die S-Taste — so kommen das SPD-Stop-Pad und die STOP-Taste des Browsers an |
+| OSC `/looper/all/stop` | alle laufenden Looper **gemeinsam** am Ende des längsten Loops (SPD „Stop all“) |
+| Stop im Transportblock (CC 42) | unverändert: alle sofort |
+
+Die Länge kommt von Live selbst (`LooperDevice.loop_length`, in Beats) — so
+kennt das Script auch Loops, die mit dem Set geladen wurden; ohne diese
+Angabe nimmt es die eigene Messung. Den Loop-Anfang merkt es sich beim Start
+des Loopers (Stop → Play). Läuft ein Looper schon, während das Script lädt,
+stoppt der erste Stop wie früher am nächsten Taktstrich. Braucht Live 12; unter Live 11
+bleiben die S-Tasten beim Live-Mapping. Abschalten: `STOP_AT_LOOP_END = False`.
 
 ### Marker-Tasten: durch Lives Spuren blättern
 
@@ -313,7 +338,7 @@ Die **Fader** folgen der Bank weiterhin.
 | R-Tasten | 64–71 | **nein** → frei für Live-Mapping (Transportknopf) |
 | M-Tasten | 48–55 | **nein** → frei für Live-Mapping (Clear); LEDs treibt das Script |
 | Track ◀ ▶ | 58, 59 | **nein** → AbleSet (Song vor/zurück) |
-| S-Tasten | 32–39 | **nein** → frei für Live-Mapping (Stop-Knopf) |
+| S-Tasten | 32–39 | **ja** (Stop am Loop-Ende; unter Live 11 nein → Live-Mapping) |
 | Fader | 0–7 | **ja** |
 | Regler | 16–23 | nein → frei für Live-Mapping |
 | Transport Play/Stop/Rec | 41, 42, 45 | **ja** |

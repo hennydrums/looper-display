@@ -12,6 +12,12 @@ Browser: auf dem Mac, auf einem zweiten Monitor oder auf jedem Tablet im
 selben Netz. Kein Max for Live, kein AbletonOSC, keine bestimmte Hardware
 nötig.
 
+**Voraussetzungen:** Mac mit Apple-Chip (M1 oder neuer), macOS 12 oder
+neuer, Ableton Live 11 oder 12. **Empfohlen ist Live 12** — nur damit spielt
+Stop den Loop zu Ende, kennt die Anzeige die Länge von Loops, die mit dem Set
+geladen wurden, und zeigt bei leeren Loopern die voreingestellte
+Aufnahmelänge. Unter Live 11 läuft alles andere wie gewohnt.
+
 ## Was du bekommst
 
 ```

@@ -223,6 +223,13 @@
    LED-Rückmeldung) und/oder ein <b>Roland SPD-SX PRO</b> (per Pad). Beide
    lösen dieselben Zuweisungen aus wie die Bedienung im Browser und
    dürfen gleichzeitig laufen.</p>
+<p class="note"><b>Voraussetzungen:</b> Mac mit Apple-Chip (M1 oder neuer), macOS 12
+   oder neuer, Ableton Live 11 oder 12. <b>Empfohlen ist Live 12</b> — nur dort gibt
+   Live den Scripts Zugriff auf den Looper selbst. Deshalb nur mit Live 12:
+   Stop spielt den Loop zu Ende, die Anzeige kennt die Länge von Loops, die mit dem
+   Set geladen wurden, und ein leerer Looper zeigt die voreingestellte
+   Aufnahmelänge. Unter Live 11 läuft alles andere wie gewohnt, Stop greift dann
+   am nächsten Taktstrich.</p>
 
 <div class="toc">
   <b>Installation</b>
@@ -533,7 +540,7 @@
      In der Mitte steht <code>Takt / Takte</code> und der Zustand.</p>
   <div class="legend">
     <div class="row"><div class="swatch" style="border-color: var(--record); background: color-mix(in srgb, var(--record) 25%, transparent);"></div>
-      <div><b>Record</b><br><span>beide Ringe rot, außen pulsiert gestrichelt, Zähler der aufgenommenen Takte</span></div></div>
+      <div><b>Record</b><br><span>beide Ringe rot, außen pulsiert gestrichelt, Zähler der aufgenommenen Takte — bei voreingestellter Aufnahmelänge als „2/4"</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--play); background: color-mix(in srgb, var(--bar) 55%, transparent);"></div>
       <div><b>Play</b><br><span>außen grün, innen orange</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--overdub); background: color-mix(in srgb, var(--overdub) 35%, transparent);"></div>
@@ -543,7 +550,7 @@
     <div class="row"><div class="swatch" style="border-color: var(--dim); background: transparent; border-style: dashed;"></div>
       <div><b>Länge unbekannt</b><br><span>Außenring gestrichelt; auf den inneren Kreis <b>lange drücken</b> schaltet die Taktzahl von Hand durch</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--stop); background: var(--stop);"></div>
-      <div><b>Leer</b><br><span>nur dünne Konturen und „LEER" — auch wenn der Looper formal auf Play steht</span></div></div>
+      <div><b>Leer</b><br><span>nur dünne Konturen und „LEER" — auch wenn der Looper formal auf Play steht; darunter die am Looper voreingestellte Aufnahmelänge, z. B. „[4 Takte]" (Live 12)</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--accent); background: transparent;"></div>
       <div><b>SPD-Auswahl</b><br><span>gelber Rahmen und das Schild „SPD" zeigen den am SPD-SX gewählten Looper</span></div></div>
   </div>
@@ -553,16 +560,32 @@
     <li><b>Inneren Kreis tippen</b><span>Transportknopf des Loopers — Record, Play oder Overdub, je nach Zustand</span></li>
     <li><b>Inneren Kreis zweimal schnell tippen</b><span>stoppt den Looper — Ableton behandelt zwei rasche Klicks auf den Transportknopf selbst als „Doppelklick zum Stoppen", auch wenn sie aus der Ferne über MIDI ankommen</span></li>
     <li><b>Inneren Kreis halten (0,6 s)</b><span>Taktzahl von Hand durchschalten (1, 2, 4, 8, 16), wenn die Länge unbekannt ist</span></li>
-    <li><b>Ecktaste STOP</b><span>unten links am Ring — derselbe Stop, als eigene Taste</span></li>
+    <li><b>Ecktaste STOP</b><span>unten links am Ring — stoppt am Ende des Loops, siehe unten</span></li>
     <li><b>Ecktaste CLEAR</b><span>unten rechts am Ring — Looper löschen</span></li>
     <li><b>Taste F / Button „Vollbild"</b><span>Vollbild an/aus</span></li>
     <li><b>Taste R</b><span>Looper im Set neu suchen, nach einem Umbau</span></li>
     <li><b>„📱 Tablet"</b><span>zeigt die Adresse, unter der Tablet oder Handy im selben WLAN die Anzeige öffnen</span></li>
     <li><b>„⏻ Server beenden"</b><span>beendet den Server, nach Rückfrage — alle offenen Tabs und Tablets zeigen danach „Server wurde beendet"; neu starten per Doppelklick auf <code>LooperDisplay.app</code> am Rechner selbst</span></li>
   </ul>
-  <p>Live führt Stop und den Transportknopf erst am nächsten Taktstrich aus.
-     Bis dahin pulsiert die getippte Stelle hell mit „WARTET" — so ist sofort
-     sichtbar, dass der Tipp angekommen ist, auch wenn noch nichts passiert.</p>
+  <p>Live führt den Transportknopf erst am nächsten Taktstrich aus. Bis dahin
+     pulsiert die getippte Stelle hell mit „WARTET" — so ist sofort sichtbar,
+     dass der Tipp angekommen ist, auch wenn noch nichts passiert.</p>
+  <h4>Stop spielt den Loop zu Ende</h4>
+  <p>Stop bricht nicht am nächsten Taktstrich ab, sondern lässt den Loop bis
+     zu seinem Ende laufen: Ein 4-Takter, gestoppt in Takt 1, spielt noch bis
+     Takt 4. Das gilt für die Ecktaste STOP, die S-Tasten am nanoKONTROL2 und
+     das Stop-Pad am SPD-SX. Solange er wartet, pulsiert STOP mit „WARTET",
+     im Ring steht „stoppt am Ende", und am nanoKONTROL2 blinkt S schnell.</p>
+  <ul class="keys">
+    <li><b>Stop zweimal drücken</b><span>stoppt doch schon am nächsten Taktstrich — für den Fall, dass es schneller gehen muss</span></li>
+    <li><b>„alle Looper stoppen" am SPD-SX</b><span>alle stoppen gemeinsam, wenn der längste laufende Loop zu Ende ist</span></li>
+    <li><b>■ am nanoKONTROL2</b><span>stoppt weiterhin alle sofort — fürs Songende</span></li>
+  </ul>
+  <p class="note">Braucht Ableton Live 12. Die Loop-Länge meldet Live selbst, auch für
+     Loops, die mit dem Set geladen wurden. Den Loop-Anfang merkt sich das Script, wenn
+     der Looper startet — läuft ein Looper schon, während Live oder das Script gerade
+     erst geladen wird, stoppt er beim ersten Mal wie früher am nächsten Taktstrich.
+     Einmal stoppen und neu starten, danach passt es wieder.</p>
 
   <h3 id="transport-de">Transport-Leiste oben</h3>
   <p>Vier Tasten neben Tempo und Takt steuern Lives Transport, unabhängig von
@@ -625,8 +648,8 @@
         <div class="pad script"><span class="pos">links oben</span><span class="f">Clear</span><span class="n">Note 1</span></div>
         <div class="pad script"><span class="pos">Mitte oben</span><span class="f">alle Looper starten</span><span class="n">Note 4</span></div>
         <div class="pad ableset"><span class="pos">rechts oben</span><span class="f">Transport Start/Stop</span><span class="n">Note 62</span></div>
-        <div class="pad script"><span class="pos">links Mitte</span><span class="f">Stop</span><span class="n">Note 2</span></div>
-        <div class="pad script"><span class="pos">Mitte</span><span class="f">alle Looper stoppen</span><span class="n">Note 5</span></div>
+        <div class="pad script"><span class="pos">links Mitte</span><span class="f">Stop am Loop-Ende</span><span class="n">Note 2</span></div>
+        <div class="pad script"><span class="pos">Mitte</span><span class="f">alle Looper stoppen, gemeinsam am Loop-Ende</span><span class="n">Note 5</span></div>
         <div class="pad ableset"><span class="pos">rechts Mitte</span><span class="f">Loop-Toggle</span><span class="n">Note 65</span></div>
         <div class="pad script"><span class="pos">links unten</span><span class="f">Start / Rec / Overdub</span><span class="n">Note 3</span></div>
         <div class="pad script"><span class="pos">Mitte unten</span><span class="f">◀ vorheriger Looper</span><span class="n">Note 6</span></div>
@@ -671,6 +694,12 @@
    controlled via real hardware: a <b>KORG nanoKONTROL2</b> (with LED
    feedback) and/or a <b>Roland SPD-SX PRO</b> (via pads). Both trigger the
    same mappings as browser control and can run at the same time.</p>
+<p class="note"><b>Requirements:</b> Mac with Apple silicon (M1 or newer), macOS 12
+   or newer, Ableton Live 11 or 12. <b>Live 12 is recommended</b> — only there does
+   Live give scripts access to the looper itself. So only with Live 12: stop plays
+   the loop to its end, the display knows the length of loops loaded with the set,
+   and an empty looper shows the preset record length. Under Live 11 everything
+   else works as usual, and stop happens at the next bar line.</p>
 
 <div class="toc">
   <b>Installation</b>
@@ -976,7 +1005,7 @@
      once per bar. The middle shows <code>bar / bars</code> and the state.</p>
   <div class="legend">
     <div class="row"><div class="swatch" style="border-color: var(--record); background: color-mix(in srgb, var(--record) 25%, transparent);"></div>
-      <div><b>Record</b><br><span>both rings red, outer one pulses dashed, counter of recorded bars</span></div></div>
+      <div><b>Record</b><br><span>both rings red, outer one pulses dashed, counter of recorded bars — shown as "2/4" when a record length is preset</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--play); background: color-mix(in srgb, var(--bar) 55%, transparent);"></div>
       <div><b>Play</b><br><span>outer green, inner orange</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--overdub); background: color-mix(in srgb, var(--overdub) 35%, transparent);"></div>
@@ -986,7 +1015,7 @@
     <div class="row"><div class="swatch" style="border-color: var(--dim); background: transparent; border-style: dashed;"></div>
       <div><b>Length unknown</b><br><span>outer ring dashed; <b>press and hold</b> the inner circle to cycle the bar count by hand</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--stop); background: var(--stop);"></div>
-      <div><b>Empty</b><br><span>only thin outlines and "EMPTY" — even if the looper is formally in Play</span></div></div>
+      <div><b>Empty</b><br><span>only thin outlines and "LEER" (empty) — even if the looper is formally in Play; below it the record length preset on the looper, e.g. "[4 Takte]" (Live 12)</span></div></div>
     <div class="row"><div class="swatch" style="border-color: var(--accent); background: transparent;"></div>
       <div><b>SPD selection</b><br><span>a yellow ring and the "SPD" badge show the looper currently selected on the SPD-SX</span></div></div>
   </div>
@@ -996,17 +1025,33 @@
     <li><b>Tap the inner circle</b><span>the looper's transport button — Record, Play or Overdub, depending on state</span></li>
     <li><b>Tap the inner circle twice quickly</b><span>stops the looper — Ableton itself treats two quick clicks on the transport button as a "double-click to stop", even when they arrive remotely over MIDI</span></li>
     <li><b>Hold the inner circle (0.6s)</b><span>cycle the bar count by hand (1, 2, 4, 8, 16) when the length is unknown</span></li>
-    <li><b>Corner button STOP</b><span>bottom left on the ring — the same stop, as its own button</span></li>
+    <li><b>Corner button STOP</b><span>bottom left on the ring — stops at the end of the loop, see below</span></li>
     <li><b>Corner button CLEAR</b><span>bottom right on the ring — clears the looper</span></li>
     <li><b>Key F / "Fullscreen" button</b><span>toggle fullscreen</span></li>
     <li><b>Key R</b><span>re-scan the loopers in the set, after a rebuild</span></li>
     <li><b>"📱 Tablet"</b><span>shows the address a tablet or phone on the same Wi-Fi can open the display at</span></li>
     <li><b>"⏻ Server beenden"</b><span>stops the server, after confirmation — all open tabs and tablets then show "Server wurde beendet"; restart by double-clicking <code>LooperDisplay.app</code> on the computer itself</span></li>
   </ul>
-  <p>Live executes Stop and the transport button only on the next bar line.
-     Until then, the tapped spot pulses brightly with "WAITING" — so it's
+  <p>Live executes the transport button only on the next bar line. Until
+     then, the tapped spot pulses brightly with "WARTET" (waiting) — so it's
      immediately visible that the tap arrived, even if nothing has happened
      yet.</p>
+  <h4>Stop plays the loop to its end</h4>
+  <p>Stop doesn't cut off at the next bar line, it lets the loop run to its
+     end: a 4-bar loop stopped in bar 1 keeps playing through bar 4. This
+     applies to the STOP corner button, the S buttons on the nanoKONTROL2 and
+     the stop pad on the SPD-SX. While it waits, STOP pulses with "WARTET",
+     the ring shows "stoppt am Ende", and S blinks fast on the nanoKONTROL2.</p>
+  <ul class="keys">
+    <li><b>Press stop twice</b><span>stops at the next bar line after all — for when it has to be quicker</span></li>
+    <li><b>"stop all loopers" on the SPD-SX</b><span>all stop together when the longest running loop ends</span></li>
+    <li><b>■ on the nanoKONTROL2</b><span>still stops everything immediately — for the end of a song</span></li>
+  </ul>
+  <p class="note">Requires Ableton Live 12. Live reports the loop length itself,
+     also for loops loaded with the set. The script notes where the loop begins
+     when the looper starts — if a looper is already running while Live or the
+     script is just being loaded, the first stop happens at the next bar line as
+     before. Stop and restart it once and it works again.</p>
 
   <h3 id="transport-en">Transport bar at the top</h3>
   <p>Four buttons next to tempo and time signature control Live's transport,
@@ -1069,8 +1114,8 @@
         <div class="pad script"><span class="pos">top left</span><span class="f">Clear</span><span class="n">Note 1</span></div>
         <div class="pad script"><span class="pos">top middle</span><span class="f">start all loopers</span><span class="n">Note 4</span></div>
         <div class="pad ableset"><span class="pos">top right</span><span class="f">Transport start/stop</span><span class="n">Note 62</span></div>
-        <div class="pad script"><span class="pos">middle left</span><span class="f">Stop</span><span class="n">Note 2</span></div>
-        <div class="pad script"><span class="pos">middle</span><span class="f">stop all loopers</span><span class="n">Note 5</span></div>
+        <div class="pad script"><span class="pos">middle left</span><span class="f">Stop at loop end</span><span class="n">Note 2</span></div>
+        <div class="pad script"><span class="pos">middle</span><span class="f">stop all loopers, together at loop end</span><span class="n">Note 5</span></div>
         <div class="pad ableset"><span class="pos">middle right</span><span class="f">Loop toggle</span><span class="n">Note 65</span></div>
         <div class="pad script"><span class="pos">bottom left</span><span class="f">Start / Rec / Overdub</span><span class="n">Note 3</span></div>
         <div class="pad script"><span class="pos">bottom middle</span><span class="f">◀ previous looper</span><span class="n">Note 6</span></div>
@@ -1138,14 +1183,16 @@
     de: [
       { name: 'Record', desc: 'Aufnahme läuft', r: 'fast', m: 'fast', s: 'fast' },
       { name: 'Overdub', desc: 'Overdub läuft', r: 'slow', m: 'slow', s: 'slow' },
-      { name: 'Play', desc: 'Loop spielt — S stoppt ihn', r: 'off', m: 'off', s: 'slow' },
+      { name: 'Play', desc: 'Loop spielt — S stoppt ihn am Loop-Ende', r: 'off', m: 'off', s: 'slow' },
+      { name: 'Stop wartet', desc: 'S gedrückt, der Loop spielt noch zu Ende', r: 'off', m: 'off', s: 'fast' },
       { name: 'Stop, mit Inhalt', desc: 'R nimmt auf, M löscht', r: 'on', m: 'on', s: 'off' },
       { name: 'Leer', desc: 'gestoppt — nichts zu löschen', r: 'on', m: 'off', s: 'off' }
     ],
     en: [
       { name: 'Record', desc: 'recording', r: 'fast', m: 'fast', s: 'fast' },
       { name: 'Overdub', desc: 'overdub running', r: 'slow', m: 'slow', s: 'slow' },
-      { name: 'Play', desc: 'loop is playing — S stops it', r: 'off', m: 'off', s: 'slow' },
+      { name: 'Play', desc: 'loop is playing — S stops it at the loop end', r: 'off', m: 'off', s: 'slow' },
+      { name: 'Stop waiting', desc: 'S pressed, the loop plays to its end', r: 'off', m: 'off', s: 'fast' },
       { name: 'Stop, with content', desc: 'R records, M clears', r: 'on', m: 'on', s: 'off' },
       { name: 'Empty', desc: 'stopped — nothing to clear', r: 'on', m: 'off', s: 'off' }
     ]

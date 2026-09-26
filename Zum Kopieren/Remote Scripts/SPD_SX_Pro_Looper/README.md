@@ -52,8 +52,8 @@ Einstellungen unten im Script passen:
 | 1 | 1 | Loop DELETE | Clear |
 | 2 | 4 | START ALL Loops | alle Looper starten, sofort |
 | 3 | 62 | SONG START/STOP | nicht vom Script — Lives Transport direkt |
-| 4 | 2 | Loop STOP | Stop |
-| 5 | 5 | STOP ALL LOOPER | alle Looper stoppen, quantisiert |
+| 4 | 2 | Loop STOP | Stop am Loop-Ende |
+| 5 | 5 | STOP ALL LOOPER | alle Looper stoppen, gemeinsam am Ende des längsten Loops |
 | 6 | 65 | LOOPING Toggle | nicht vom Script — Loop in der Arrangement-Ansicht über AbleSet |
 | 7 | 3 | Loop GO | Start / Record / Overdub |
 | 8 | 6 | PREV Looper | ◀ vorheriger Looper |
@@ -68,10 +68,10 @@ Die drei linken Pads wirken immer auf den **gerade gewählten** Looper:
 | Pad | Note | Funktion |
 |---|---|---|
 | links **oben** | 1 | **Clear** — über die IAC-Schleife |
-| links **Mitte** | 2 | **Stop** — über die IAC-Schleife |
+| links **Mitte** | 2 | **Stop am Loop-Ende** — über das LooperDisplay-Script |
 | links **unten** | 3 | **Start / Record / Overdub** — über die IAC-Schleife |
 | Mitte **oben** | 4 | **alle Looper starten** — sofort, über die API |
-| **Mitte** | 5 | **alle Looper stoppen** — quantisiert, über die IAC-Schleife |
+| **Mitte** | 5 | **alle Looper stoppen** — gemeinsam am Loop-Ende, über das LooperDisplay-Script |
 | Mitte **unten** | 6 | vorheriger Looper |
 | rechts **unten** | 68 | nächster Looper |
 | rechts **oben** | 62 | Start / Stop von Lives Transport — **nicht** vom Script |
@@ -95,7 +95,7 @@ PAD_PREV  = (0, 6)
 PAD_NEXT  = (0, 68)
 
 PAD_ALL_START = (0, 4)    # alle starten, sofort
-PAD_ALL_STOP  = (0, 5)    # alle stoppen, quantisiert
+PAD_ALL_STOP  = (0, 5)    # alle stoppen, am Loop-Ende
 ```
 
 Alle auf **Kanal 1**. Das Pad rechts unten sendet ab Werk auf Kanal 12 und
@@ -228,9 +228,12 @@ Definiert ist er in
 
 ### Sammelbefehle
 
-**Stoppen (Mitte)** sendet den Stop-CC für jeden Looper nacheinander — über
-Lives Mapping, also **quantisiert**: alle gehen gemeinsam am nächsten
-Taktstrich aus. Neue Zuweisungen braucht es dafür nicht.
+**Stoppen (Mitte)** schickt einen Stop-Wunsch an das Script LooperDisplay
+(OSC `/looper/all/stop` auf Port 11005). Das zählt die Takte mit und lässt
+alle Looper **gemeinsam am Ende des längsten Loops** stoppen; ein zweiter
+Druck stoppt am nächsten Taktstrich. Das einzelne Stop-Pad geht denselben
+Weg (`/looper/<n>/stop`). Ohne Live 12 fällt das Script auf den alten Weg
+zurück: Stop-CC über die IAC-Schleife, quantisiert auf den nächsten Takt.
 
 **Starten (Mitte oben)** geht bewusst den anderen Weg, nämlich direkt über
 den State-Parameter und damit **unquantisiert**:
